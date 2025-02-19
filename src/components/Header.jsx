@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Container, ListGroup, Navbar, Offcanvas } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const Header = ({ insideDashboard }) => {
+const Header = ({ insideDashboard , insideCompDash}) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -19,7 +19,7 @@ const Header = ({ insideDashboard }) => {
               <i class="fa-solid fa-computer"></i> HireVerse
             </Navbar.Brand>
           </Link>
-          {insideDashboard && (
+          {(insideDashboard || insideCompDash) && (
             <div className="ms-auto">
               <button style={{ color: " white" }} className="btn btn-link  ">
                 Log Out <i className="fa-solid fa-right-from-bracket"></i>
@@ -46,13 +46,24 @@ const Header = ({ insideDashboard }) => {
               </ListGroup.Item>
 
               <ListGroup.Item action >
-                Recent
+                { insideCompDash? "Job Vacancy" : "Recent"}
               </ListGroup.Item>
 
               <ListGroup.Item action >
-                jobs
+                { insideCompDash?"Job vacancy detials": "jobs"}
               </ListGroup.Item>
+
+             { insideCompDash && <ListGroup.Item action >
+                Job Request's
+              </ListGroup.Item>}
+
+              { insideCompDash && <ListGroup.Item action >
+                Sorted Request's
+              </ListGroup.Item>}
+
             </ListGroup>
+
+            
           </div>
         </Offcanvas.Body>
       </Offcanvas>

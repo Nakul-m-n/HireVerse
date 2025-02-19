@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import Auth from './pages/Auth'
 import UserDashboard from './pages/UserDashboard'
 import Header from './components/Header'
+import CompDashboard from './pages/CompDashboard'
 
 function App() {
   
@@ -18,6 +19,7 @@ function App() {
         <Route path='/register' element={<Auth insideRegister={true}/>}/>
         <Route path='/register2' element={<Auth insideCompany={true} />}/>
         <Route path='/userDashboard' element={<UserDashboard/>}/>
+        <Route path='/compDashboard' element={<CompDashboard/>}/>
       </Routes>
       <Footer/>
     </>
