@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import user from "../assets/images/user.png";
 import { FloatingLabel, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const Auth = ({ insideRegister, insideCompany }) => {
+  var [authType, setAuthType] = React.useState(0); // 0 for user, 1 for company
+  var [authUrl, setAuthUrl] = React.useState("/userDashboard");
+
+  useEffect(() => {
+    // setAuthType(0);
+    // setAuthUrl("/userDashboard");
+
+    // authType = 0;
+
+    setAuthType(1);
+    setAuthUrl("/compDashboard");
+  }, []);
+
   return (
     <div
       style={{ minHeight: "100vh", width: "100%" }}
@@ -118,7 +131,7 @@ const Auth = ({ insideRegister, insideCompany }) => {
                 <Link
                   style={{ alignContent: "center" }}
                   className="btn btn-primary  "
-                  to={"/userDashboard"}
+                  to={authUrl}
                 >
                   {insideRegister
                     ? "signup"
