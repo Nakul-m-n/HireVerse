@@ -29,25 +29,28 @@ const Auth = ({ insideRegister, insideCompany }) => {
                     fontFamily: '"Protest Strike", serif',
                   }}
                 >
-                  {insideRegister ? "SignUp" : insideCompany? "SignUp":"Login"}
+                  {insideRegister
+                    ? "SignUp"
+                    : insideCompany
+                    ? "SignUp"
+                    : "Login"}
                 </h3>
                 <hr />
 
                 <div className="p-3 ">
                   {insideCompany && (
-
                     <>
-                        <p style={{ textAlign: "center", color: "grey" }}>
-                          <Link style={{ color: "grey" }} to={"/register"}>
-                            New user
-                          </Link>
-                        </p>
+                      <p style={{ textAlign: "center", color: "grey" }}>
+                        <Link style={{ color: "grey" }} to={"/register"}>
+                          New user
+                        </Link>
+                      </p>
 
-                        <p style={{ textAlign: "center", color: "grey" }}>
-                      <Link style={{ color: "grey" }} to={"/login"}>
-                        Login
-                      </Link>
-                    </p>
+                      <p style={{ textAlign: "center", color: "grey" }}>
+                        <Link style={{ color: "grey" }} to={"/login"}>
+                          Login
+                        </Link>
+                      </p>
                     </>
                   )}
                   {!insideRegister && !insideCompany && (
@@ -59,17 +62,17 @@ const Auth = ({ insideRegister, insideCompany }) => {
                   )}
                   {insideRegister && (
                     <>
-                    <p style={{ textAlign: "center", color: "grey" }}>
-                      <Link style={{ color: "grey" }} to={"/register2"}>
-                        New company
-                      </Link>
-                    </p>
+                      <p style={{ textAlign: "center", color: "grey" }}>
+                        <Link style={{ color: "grey" }} to={"/register2"}>
+                          New company
+                        </Link>
+                      </p>
 
-                    <p style={{ textAlign: "center", color: "grey" }}>
-                      <Link style={{ color: "grey" }} to={"/login"}>
-                     Login
-                      </Link>
-                    </p>
+                      <p style={{ textAlign: "center", color: "grey" }}>
+                        <Link style={{ color: "grey" }} to={"/login"}>
+                          Login
+                        </Link>
+                      </p>
                     </>
                   )}
                 </div>
@@ -80,9 +83,10 @@ const Auth = ({ insideRegister, insideCompany }) => {
               {/*  login form   */}
               <div className="d-flex-column w-75  ">
                 <h3>HireVerse</h3>
-                <p>Sign {insideRegister ? "up" : 
-                insideCompany?"up":
-                "in"} to your account</p>
+                <p>
+                  Sign {insideRegister ? "up" : insideCompany ? "up" : "in"} to
+                  your account
+                </p>
 
                 {
                   // inside company
@@ -116,7 +120,11 @@ const Auth = ({ insideRegister, insideCompany }) => {
                   className="btn btn-primary  "
                   to={"/userDashboard"}
                 >
-                  { insideRegister? "signup": insideCompany ? "signup": "Login"}
+                  {insideRegister
+                    ? "signup"
+                    : insideCompany
+                    ? "signup"
+                    : "Login"}
                 </Link>
               </div>
             </div>
