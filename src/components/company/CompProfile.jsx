@@ -55,7 +55,7 @@ const CompProfile = () => {
                               </Form.Floating>
             
                               <Form.Floating className="mb-3">
-                                <Form.Control id="floatingEmail" type="email" placeholder="name@example.com" />
+                                <Form.Control id="floatingAbout" type="email" placeholder="name@example.com" />
                                 <label htmlFor="floatingEmail">About </label>
                               </Form.Floating>
             
@@ -66,12 +66,12 @@ const CompProfile = () => {
                               </Form.Floating>
             
                               <Form.Floating className="mb-3">
-                                <Form.Control id="floatingEmail" type="email" placeholder="name@example.com" />
+                                <Form.Control id="floatingPhn" type="email" placeholder="name@example.com" />
                                 <label htmlFor="floatingEmail">Phone Number</label>
                               </Form.Floating>
             
                               <Form.Floating className="mb-3">
-                                <Form.Control id="floatingEmail" type="email" placeholder="name@example.com" />
+                                <Form.Control id="floatingLoc" type="email" placeholder="name@example.com" />
                                 <label htmlFor="floatingEmail">Location </label>
                               </Form.Floating>
             

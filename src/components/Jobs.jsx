@@ -1,10 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import tcs from "../assets/images/tcs.png";
 import { Button, Card, Modal } from 'react-bootstrap'
 
 const Jobs = () => {
 
     const [show, setShow] = useState(false);
+    const [userName, setUserName]= useState("user")
+
+    useEffect(()=> {
+      var name =window.localStorage.getItem("name")
+    
+        setUserName(name?name : "user")
+      
+
+    },[])
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -18,7 +27,7 @@ const Jobs = () => {
               <h1>
                 {" "}
                 Welcome ,
-                <span style={{ fontFamily: "Protest Strike, serif" }}>user</span>
+                <span style={{ fontFamily: "Protest Strike, serif" }}>{userName}</span>
               </h1>
     
               <div className="d-flex  ">
@@ -271,7 +280,7 @@ const Jobs = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">Understood</Button>
+          <Button variant="primary">Apply</Button>
         </Modal.Footer>
       </Modal>
     </>

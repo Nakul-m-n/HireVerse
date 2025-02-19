@@ -6,6 +6,7 @@ import Recent from './Recent';
 import UserSkills from './UserSkills';
 
 const UserProfile = () => {
+  var [navTab,SetNavTab]=useState(0)
   return (
     <div style={{ minHeight: '100vh', padding:'100px' }}>
       <div className="container ">
@@ -19,22 +20,27 @@ const UserProfile = () => {
             defaultActiveKey="link-1"
           > 
             <Nav.Item >
-              <Nav.Link  eventKey="link-1">User Details</Nav.Link>
+              <Nav.Link onClick={() => SetNavTab(0)} eventKey="link-1">User Details</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="link-2">Qualification</Nav.Link>
+              <Nav.Link onClick={() => SetNavTab(1)} eventKey="link-2">Qualification</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="link-3">Skills</Nav.Link>
+              <Nav.Link onClick={() => SetNavTab(2)} eventKey="link-3">Skills</Nav.Link>
             </Nav.Item>
           </Nav>
 
           {/* User Details */}
-          <UserInfo/>
+          
           {/* qualification */}
           {/* <UserQuali/> */}
           {/* skills */}
           {/* <UserSkills/> */}
+
+
+          {navTab === 0 && <UserInfo />}
+      {navTab === 1 && <UserQuali />}
+      {navTab === 2 && <UserSkills />}
           
         </Card>
       </div>

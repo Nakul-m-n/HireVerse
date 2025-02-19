@@ -32,7 +32,7 @@ const UserQuali = () => {
                   
 
                   <Button variant="success" className="w-100 mt-3">
-                    Save
+                    add
                   </Button>
                 </div>
               </div>

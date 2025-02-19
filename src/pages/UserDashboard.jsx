@@ -7,16 +7,19 @@ import Recent from "../components/Recent";
 
 const UserDashboard = () => {
   var [tab, setTab] = useState(0);
+  
 
   return (
     <>
       {/* header */}
       <Header insideDashboard={true} setTab={setTab} />
 
-      {/* jobs */}
+      {/* side bar */}
       {tab === 0 && <UserProfile />}
       {tab === 1 && <Recent />}
       {tab === 2 && <Jobs />}
+
+
     </>
   );
 };

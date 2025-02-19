@@ -30,18 +30,12 @@ const UserSkills = () => {
                     <label htmlFor="floatingName">skill</label>
                   </Form.Floating>
 
-                  <Form.Floating className="mb-3">
-                    <Form.Control id="floatingEmail" type="email" placeholder="name@example.com" />
-                    <label htmlFor="floatingEmail">Plus Two </label>
-                  </Form.Floating>
+                 
 
-                  <Form.Floating>
-                    <Form.Control id="floatingPassword" type="password" placeholder="Password" />
-                    <label htmlFor="floatingPassword">Degree/Diploma</label>
-                  </Form.Floating>
+                 
 
                   <Button variant="success" className="w-100 mt-3">
-                    Save
+                    Add
                   </Button>
                 </div>
               </div>

@@ -51,10 +51,7 @@ const UserInfo = () => {
                     <label htmlFor="floatingEmail">Email Address</label>
                   </Form.Floating>
 
-                  <Form.Floating>
-                    <Form.Control id="floatingPassword" type="password" placeholder="Password" />
-                    <label htmlFor="floatingPassword">Password</label>
-                  </Form.Floating>
+                  
 
                   <Button variant="success" className="w-100 mt-3">
                     Save

@@ -1,22 +1,35 @@
 import React, { useState } from 'react'
 import { Button, Card, Modal } from 'react-bootstrap'
+import tcs from "../../assets/images/tcs.png"
+import AddJob from './AddJob';
 
 const JobVacDetials = () => {
-    const [show, setShow] = useState(false);
-    
-      const handleClose = () => setShow(false);
-      const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
-     <div style={{ minHeight: '100vh', padding:'100px' }} className='d-flex-column'>
+    <>
+        <div
+            className="container-fluid"
+            style={{ paddingTop: "100px", minHeight: "100vh" }}
+          >
+           
+           
     
-        <Button onClick={handleShow} className='float-end' size='xl' style={{width:"5rem",marginRight:'60px'}} > + </Button>
-    
-      
-        <div className=' p-5'>
-        <Card style={{height:'18rem'}} className="shadow mb-2  ">
+            <div style={{ minHeight: "100vh" }}>
+             <div className='d-flex align-items-center justify-content-between '>
+                  <h2 className="m-5">
+                   Job vaccancy detials
+                  </h2>
+                <AddJob/>
+             </div>
+              {/* cardsss */}
+              <div className="d-flex-column justify-content-center container ">
+                <Card className="shadow mb-2 ">
                   <Card.Body>
-                    <div className="d-flex ">
-                      <img className='img-fluid' width={"80px"} src='https://www.thestatesman.com/wp-content/uploads/2022/06/TCS.jpg' alt="" />
+                    <div className="d-flex">
+                      <img width={"100px"} src={tcs} alt="" />
     
                       <div>
                         <Card.Title>Junior React devloper</Card.Title>
@@ -66,12 +79,143 @@ const JobVacDetials = () => {
                         <i class="fa-solid fa-calendar-days"></i> Last date:{" "}
                         <span>20/03/2025</span>{" "}
                       </p>
-                      <Button >Apply now</Button>
+                      <div>
+                        <Button className='m-2'>delete</Button>
+                        <Button onClick={handleShow} >edit</Button>
+                        </div>
                     </div>
                   </Card.Body>
                 </Card>
-        </div>
-        <Modal
+    
+                <Card className="shadow mb-2 ">
+                  <Card.Body>
+                    <div className="d-flex">
+                      <img width={"100px"} src={tcs} alt="" />
+    
+                      <div>
+                        <Card.Title>Junior React devloper</Card.Title>
+    
+                        <div className="d-flex justify-content-around">
+                          <p>
+                            {" "}
+                            <i class="fa-regular fa-clock"></i> Full time
+                          </p>
+                          <p>
+                            {" "}
+                            <i class="fa-solid fa-house-laptop"></i>Work-from-Home
+                          </p>
+                          <p>
+                            {" "}
+                            <i class="fa-solid fa-laptop"></i>Work-at-Office
+                          </p>
+                          <p>
+                            {" "}
+                            <i class="fa-solid fa-location-dot"></i> Trivandrum
+                          </p>
+                          <p>
+                            <i class="fa-solid fa-sack-dollar"></i> 15000 - 20000
+                            Monthly
+                          </p>
+                        </div>
+                        <div>
+                          {/* discription */}
+                          <p>
+                            {" "}
+                            Should have a strong grasp of HTML, CSS, JavaScript
+                            (ES6+), React.js (components, hooks, state management),
+                            React Router, basic Redux or Context API, RESTful APIs,
+                            Git, and CSS frameworks like Tailwind or Bootstrap,
+                            along with good problem-solving, communication, and
+                            collaboration skills, Next.js
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="d-flex justify-content-between">
+                      <p
+                        style={{ fontFamily: "monospace" }}
+                        className="font-weight-bold"
+                      >
+                        <i class="fa-solid fa-calendar-days"></i> Last date:{" "}
+                        <span>20/03/2025</span>{" "}
+                      </p>
+                      <div>
+                        <Button className='m-2'>delete</Button>
+                        <Button>edit</Button>
+                        </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+    
+                <Card className="shadow mb-2 ">
+                  <Card.Body>
+                    <div className="d-flex">
+                      <img width={"100px"} src={tcs} alt="" />
+    
+                      <div>
+                        <Card.Title>Junior React devloper</Card.Title>
+    
+                        <div className="d-flex justify-content-around">
+                          <p>
+                            {" "}
+                            <i class="fa-regular fa-clock"></i> Full time
+                          </p>
+                          <p>
+                            {" "}
+                            <i class="fa-solid fa-house-laptop"></i>Work-from-Home
+                          </p>
+                          <p>
+                            {" "}
+                            <i class="fa-solid fa-laptop"></i>Work-at-Office
+                          </p>
+                          <p>
+                            {" "}
+                            <i class="fa-solid fa-location-dot"></i> Trivandrum
+                          </p>
+                          <p>
+                            <i class="fa-solid fa-sack-dollar"></i> 15000 - 20000
+                            Monthly
+                          </p>
+                        </div>
+                        <div>
+                          {/* discription */}
+                          <p>
+                            {" "}
+                            Should have a strong grasp of HTML, CSS, JavaScript
+                            (ES6+), React.js (components, hooks, state management),
+                            React Router, basic Redux or Context API, RESTful APIs,
+                            Git, and CSS frameworks like Tailwind or Bootstrap,
+                            along with good problem-solving, communication, and
+                            collaboration skills, Next.js
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="d-flex justify-content-between">
+                      <p
+                        style={{ fontFamily: "monospace" }}
+                        className="font-weight-bold"
+                      >
+                        <i class="fa-solid fa-calendar-days"></i> Last date:{" "}
+                        <span>20/03/2025</span>{" "}
+                      </p>
+                      <div>
+                        <Button className='m-2'>delete</Button>
+                        <Button>edit</Button>
+                        </div>
+                     
+
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
+            </div>
+          </div>
+
+          {/* modal */}
+      <Modal
         
         show={show}
         onHide={handleClose}
@@ -122,13 +266,10 @@ const JobVacDetials = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">Understood</Button>
+          <Button variant="primary">save</Button>
         </Modal.Footer>
       </Modal>
-    </div>
-
-    
-  
+    </>
   )
 }
 

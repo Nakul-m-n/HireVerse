@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import CompProfile from "../components/company/CompProfile";
 import JobVacancy from "../components/company/JobVacancy";
 import JobVacDetials from "../components/company/JobVacDetials";
+import JobRequest from "../components/company/JobRequest";
+import SortedJobReq from "../components/company/SortedJobReq";
 
 const CompDashboard = () => {
   var [tab, setTab] = useState(0);
@@ -13,8 +15,8 @@ const CompDashboard = () => {
       {tab === 0 && <CompProfile />}
       {tab === 1 && <JobVacancy />}
       {tab === 2 && <JobVacDetials />}
-      {tab === 3 && <h1>Job Request</h1>}
-      {tab === 4 && <h1>Sorted Request</h1>}
+      {tab === 3 && <JobRequest/>}
+      {tab === 4 && <SortedJobReq/>}
       {/* <CompProfile/> */}
 
       {/* <JobVacancy/> */}
