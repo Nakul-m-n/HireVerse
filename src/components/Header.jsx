@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { Button, Container, ListGroup, Navbar, Offcanvas } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  ListGroup,
+  Navbar,
+  Offcanvas,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const Header = ({ insideDashboard , insideCompDash}) => {
+const Header = ({ insideDashboard, insideCompDash, setTab }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -39,31 +45,31 @@ const Header = ({ insideDashboard , insideCompDash}) => {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <div>
-            <ListGroup >
-              
-            <ListGroup.Item action >
+            <ListGroup>
+              <ListGroup.Item action onClick={() => setTab(0)}>
                 profile
               </ListGroup.Item>
 
-              <ListGroup.Item action >
-                { insideCompDash? "Job Vacancy" : "Recent"}
+              <ListGroup.Item action onClick={() => setTab(1)}>
+                {insideCompDash ? "Job Vacancy" : "Recent"}
               </ListGroup.Item>
 
-              <ListGroup.Item action >
-                { insideCompDash?"Job vacancy detials": "jobs"}
+              <ListGroup.Item action onClick={() => setTab(2)}>
+                {insideCompDash ? "Job vacancy detials" : "jobs"}
               </ListGroup.Item>
 
-             { insideCompDash && <ListGroup.Item action >
-                Job Request's
-              </ListGroup.Item>}
+              {insideCompDash && (
+                <ListGroup.Item action onClick={() => setTab(3)}>
+                  Job Request&#39;s
+                </ListGroup.Item>
+              )}
 
-              { insideCompDash && <ListGroup.Item action >
-                Sorted Request's
-              </ListGroup.Item>}
-
+              {insideCompDash && (
+                <ListGroup.Item action onClick={() => setTab(4)}>
+                  Sorted Request&#39;s
+                </ListGroup.Item>
+              )}
             </ListGroup>
-
-            
           </div>
         </Offcanvas.Body>
       </Offcanvas>
