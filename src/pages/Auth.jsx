@@ -10,6 +10,11 @@ const Auth = ({ insideRegister, insideCompany }) => {
   useEffect(() => {
     // setAuthType(0);
     // setAuthUrl("/userDashboard");
+    window.localStorage.setItem("authType", authType);
+    window.localStorage.setItem("authUrl", authUrl);
+    window.localStorage.setItem("name", "nakul");
+    window.localStorage.setItem("email", "nakul@gmail.com");
+
 
     // authType = 0;
 
