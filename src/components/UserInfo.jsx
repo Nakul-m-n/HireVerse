@@ -20,6 +20,7 @@ const UserInfo = () => {
                 
                   <h5>Name</h5>
                   <p>name@gmail.com</p>
+                  <p>Experience</p>
                 </div>
               </div>
 
@@ -49,6 +50,11 @@ const UserInfo = () => {
                   <Form.Floating className="mb-3">
                     <Form.Control id="floatingEmail" type="email" placeholder="name@example.com" />
                     <label htmlFor="floatingEmail">Email Address</label>
+                  </Form.Floating>
+
+                  <Form.Floating className="mb-3">
+                    <Form.Control id="floatingExp" type="text" placeholder="Experience" />
+                    <label htmlFor="floatingExp"> Experience</label>
                   </Form.Floating>
 
                   

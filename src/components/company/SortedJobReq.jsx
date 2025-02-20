@@ -61,27 +61,7 @@ const SortedJobReq = () => {
         </Card.Body>
       </Card>
 
-      <Card className="my-3 " style={{ width: "13rem" }}>
-        <Card.Img
-          variant="top"
-          src="https://www.w3schools.com/howto/img_avatar.png"
-        />
-        <Card.Body>
-          <Card.Title>Jhon carter</Card.Title>
-          <Card.Text>
-            Placed at abc company as React Developer with 3.2 LPA
-          </Card.Text>
-          <Button
-            variant="outline-primary"
-            
-            className="border-0"
-          >
-            <i
-              className={`fa-solid fa-bookmark `}
-            ></i>
-          </Button>
-        </Card.Body>
-      </Card>
+      
     </div>
 </div>
   )

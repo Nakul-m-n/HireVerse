@@ -5,7 +5,7 @@ const CompProfile = () => {
   return (
    
         <div style={{padding:'100px', minHeight:'100vh'}} className='container'>
-            <Card>
+            <Card className='shadow'>
                 <div  className="container w-75 ">
                         <div className="row">
                           {/* Left Column (Empty for Future Content) */}

@@ -12,8 +12,8 @@ const Auth = ({ insideRegister, insideCompany }) => {
     // setAuthUrl("/userDashboard");
     window.localStorage.setItem("authType", authType);
     window.localStorage.setItem("authUrl", authUrl);
-    window.localStorage.setItem("name", "nakul");
-    window.localStorage.setItem("email", "nakul@gmail.com");
+    window.localStorage.setItem("name", "");
+    window.localStorage.setItem("email", "");
 
 
     // authType = 0;
@@ -130,8 +130,8 @@ const Auth = ({ insideRegister, insideCompany }) => {
                   <Form.Control type="email" placeholder="name@example.com" />
                 </FloatingLabel>
                 {/* password */}
-                <FloatingLabel label="Passworsd " className="mb-3">
-                  <Form.Control type="email" placeholder="" />
+                <FloatingLabel label="Password " className="mb-3">
+                  <Form.Control type="password" placeholder="" />
                 </FloatingLabel>
                 <Link
                   style={{ alignContent: "center" }}

@@ -79,7 +79,7 @@ const AddJob = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">save</Button>
+          <Button variant="primary">add</Button>
         </Modal.Footer>
       </Modal>
     </>

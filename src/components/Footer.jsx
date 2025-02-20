@@ -7,7 +7,7 @@ const Footer = () => {
     <div className='d-flex justify-content-between'>
         {/* intro */}
         <div style={{width:'400px'}}>
-            <h5>  <i className="fa-brands fa-docker"> </i> Job Fair</h5>
+            <h5>  <i className="fa-solid fa-computer"> </i> Job Fair</h5>
             <p>Designed and built with all the love in the world by the Bootstrap team with the help of our contributors.</p>
             <p>coe liscenced Luminar,docs cc by 3,0</p>
             <p>Currently v5.3.2</p>

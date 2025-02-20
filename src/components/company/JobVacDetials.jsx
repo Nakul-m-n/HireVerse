@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, Modal } from 'react-bootstrap'
+import { Button, Card, FloatingLabel, Form, Modal } from 'react-bootstrap'
 import tcs from "../../assets/images/tcs.png"
 import AddJob from './AddJob';
 
@@ -227,40 +227,46 @@ const JobVacDetials = () => {
           <Modal.Title>JOb title</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ul>
-            <li>Location: [Remote/On-site/Hybrid]</li>
-            <li>Job Type: [Full-time/Part-time/Contract]</li>
-            <li>Experience: 0-2 years</li>
-          </ul>
-          {/* job overview */}
-          <p>
-            We are looking for a Junior React Developer to join our team and
-            assist in building modern, responsive web applications. You will
-            work closely with senior developers to develop, test, and maintain
-            front-end features using React.js, ensuring a seamless user
-            experience
-          </p>
-          {/* skills */}
-          <h4>Skills</h4>
-          <ul>
-            <li>
-              Strong understanding of React.js, JavaScript (ES6+), HTML, and
-              CSS.
-            </li>
-            <li>Experience with React Hooks (useState, useEffect, etc.).</li>
-            <li>Familiarity with React Router for navigation.</li>
-            <li>
-              Basic knowledge of state management (Context API, Redux, or
-              Zustand is a plus).
-            </li>
-            <li>
-              Understanding of REST APIs and asynchronous JavaScript (fetch,
-              Axios, etc.).
-            </li>
-            <li>Experience with Git and GitHub for version control.</li>
-            <li>Good problem-solving skills and attention to detail.</li>
-            <li>Ability to work in a team and communicate effectively.</li>
-          </ul>
+           {/* Company name */}
+           <FloatingLabel label="CompanyName" className="mb-3">
+            <Form.Control type="text" placeholder="CompanyName" />
+          </FloatingLabel>
+
+          {/* about */}
+          <FloatingLabel label="about" className="mb-3">
+            <Form.Control type="text" placeholder="About" />
+          </FloatingLabel>
+
+          {/* date */}
+          <FloatingLabel label="Last date" className="mb-3">
+            <Form.Control type="date" placeholder="Last date" />
+          </FloatingLabel>
+
+          {/* Job time */}
+          <FloatingLabel label="Job time" className="mb-3">
+            <Form.Control type="text" placeholder="job time" />
+          </FloatingLabel>
+
+          {/* job type  */}
+          <FloatingLabel label="Job type(work from home/office)" className="mb-3">
+            <Form.Control type="text" placeholder="job time" />
+          </FloatingLabel>
+
+          {/* Location */}
+          <FloatingLabel label="Location" className="mb-3">
+            <Form.Control type="text" placeholder="Location " />
+          </FloatingLabel>
+
+          {/*  salary */}
+          <FloatingLabel label=" salary" className="mb-3">
+            <Form.Control type="text" placeholder=" salary" />
+          </FloatingLabel>
+
+          {/*  skills */}
+          <FloatingLabel label=" Skills" className="mb-3">
+            <Form.Control type="text" placeholder=" Skills" />
+          </FloatingLabel>
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
