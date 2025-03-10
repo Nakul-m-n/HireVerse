@@ -31,7 +31,7 @@ const AddJob = () => {
           <Modal.Title>Add New Job</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            {/* Company name */}
+          {/* Company name */}
           <FloatingLabel label="CompanyName" className="mb-3">
             <Form.Control type="text" placeholder="CompanyName" />
           </FloatingLabel>
@@ -47,18 +47,26 @@ const AddJob = () => {
           </FloatingLabel>
 
           {/* Job time */}
-          <FloatingLabel label="Job time" className="mb-3">
-            <Form.Control type="text" placeholder="job time" />
-          </FloatingLabel>
 
           {/* job type  */}
-          <FloatingLabel label="Job type(work from home/office)" className="mb-3">
-            <Form.Control type="text" placeholder="job time" />
+          <FloatingLabel
+            label="Job type(Fulltime/partime/contract)"
+            className="mb-3"
+          >
+            <Form.Control type="text" placeholder="job type" />
           </FloatingLabel>
 
           {/* Location */}
           <FloatingLabel label="Location" className="mb-3">
             <Form.Control type="text" placeholder="Location " />
+          </FloatingLabel>
+
+          {/* Job mOde */}
+          <FloatingLabel
+            label="Jobe Mode(workFrom home/On-site/Hybrid) "
+            className="mb-3"
+          >
+            <Form.Control type="text" placeholder="Job Mode" />
           </FloatingLabel>
 
           {/*  salary */}
@@ -67,13 +75,19 @@ const AddJob = () => {
           </FloatingLabel>
 
           {/*  skills */}
-          <FloatingLabel label=" Skills" className="mb-3">
+          <FloatingLabel label=" Skills (use ; for adding next skills)" className="mb-3">
             <Form.Control type="text" placeholder=" Skills" />
           </FloatingLabel>
 
-        
+          {/*  Qualification */}
+          <FloatingLabel label=" Qualification" className="mb-3">
+            <Form.Control type="text" placeholder=" Qualification" />
+          </FloatingLabel>
 
-
+          {/*  Experience */}
+          <FloatingLabel label=" Experience" className="mb-3">
+            <Form.Control type="text" placeholder=" Experience" />
+          </FloatingLabel>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

@@ -7,6 +7,7 @@ import Auth from './pages/Auth'
 import UserDashboard from './pages/UserDashboard'
 import Header from './components/Header'
 import CompDashboard from './pages/CompDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
   
@@ -20,6 +21,7 @@ function App() {
         <Route path='/register2' element={<Auth insideCompany={true} />}/>
         <Route path='/userDashboard' element={<UserDashboard/>}/>
         <Route path='/compDashboard' element={<CompDashboard/>}/>
+        <Route path='/admin' element={<AdminDashboard/>}/>
       </Routes>
       <Footer/>
     </>

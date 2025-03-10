@@ -8,6 +8,8 @@ const JobVacDetials = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  
   return (
     <>
         <div
@@ -265,6 +267,11 @@ const JobVacDetials = () => {
           {/*  skills */}
           <FloatingLabel label=" Skills" className="mb-3">
             <Form.Control type="text" placeholder=" Skills" />
+          </FloatingLabel>
+
+          {/*  Qualification */}
+          <FloatingLabel label=" Qualification" className="mb-3">
+            <Form.Control type="text" placeholder=" Qualification" />
           </FloatingLabel>
 
         </Modal.Body>

@@ -241,8 +241,10 @@ const Jobs = () => {
           <Modal.Title>JOb title</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <h2>TCS</h2>
           <ul>
-            <li>Location: [Remote/On-site/Hybrid]</li>
+            <li>Job Mode :[Work form home/On-site/Hybrid]</li>
+            <li>Location: Trivandrum </li>
             <li>Job Type: [Full-time/Part-time/Contract]</li>
             <li>Experience: 0-2 years</li>
           </ul>
@@ -254,6 +256,10 @@ const Jobs = () => {
             front-end features using React.js, ensuring a seamless user
             experience
           </p>
+
+          {/* Qualification */}
+          <h4>Qualification</h4>
+          <p>B-tech,Diploma-computer,any computer degree </p>
           {/* skills */}
           <h4>Skills</h4>
           <ul>
