@@ -20,7 +20,7 @@ createRoot(document.getElementById("root")).render(
         closeOnClick
         rtl={false}
         draggable
-        pauseOnHover
+        pauseOnHover={false}
         // stacked
         theme="colored"
       />

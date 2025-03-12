@@ -24,7 +24,7 @@ const Auth = ({ insideRegister }) => {
       var id = toast.loading("Verifying...");
       var data = {
         email: document.querySelector('input[type="email"]').value,
-        otp: document.querySelector('input[type="text"]').value,
+        otp: document.querySelector('input[type="number"]').value,
       };
       console.log(data);
 
@@ -93,10 +93,6 @@ const Auth = ({ insideRegister }) => {
             autoClose: 5000,
           });
 
-          const otpInput = document.querySelector('input[type="text"]');
-          if (otpInput) {
-            otpInput.value = "";
-          }
           setIsOtp(true);
         })
         .catch((error) => {
@@ -263,7 +259,7 @@ const Auth = ({ insideRegister }) => {
                   insideRegister && !IsOtp && (
                     <>
                       <FloatingLabel label="Username" className="mb-3">
-                        <Form.Control type="text" placeholder="UserName" />
+                        <Form.Control type="text" placeholder="UserName" name="name" />
                       </FloatingLabel>
                     </>
                   )
@@ -283,7 +279,7 @@ const Auth = ({ insideRegister }) => {
                   </FloatingLabel>
                 ) : (
                   <FloatingLabel label="OTP " className="mb-3">
-                    <Form.Control type="text" placeholder="enter 6 digit otp" name="otp" />
+                    <Form.Control type="number" placeholder="enter 6 digit otp" name="otp" />
                   </FloatingLabel>
                 )}
 
@@ -298,7 +294,6 @@ const Auth = ({ insideRegister }) => {
                 <Link
                   style={{ alignContent: "center" }}
                   className="btn btn-primary  "
-                  // to={authUrl}
                   onClick={Submit}
                 >
                   {IsOtp ? "SUBMIT" : insideRegister ? "signup" : "Login"}
