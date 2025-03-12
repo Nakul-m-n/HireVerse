@@ -1,26 +1,172 @@
 import React, { useEffect } from "react";
 import user from "../assets/images/user.png";
 import { FloatingLabel, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import API from "../API";
+import { toast } from "react-toastify";
 
-const Auth = ({ insideRegister, insideCompany }) => {
-  var [authType, setAuthType] = React.useState(0); // 0 for user, 1 for company
-  var [authUrl, setAuthUrl] = React.useState("/userDashboard");
+const Auth = ({ insideRegister }) => {
+  const navigate = useNavigate();
+  const [IsOtp, setIsOtp] = React.useState(false);
 
-  useEffect(() => {
-    // setAuthType(0);
-    // setAuthUrl("/userDashboard");
-    window.localStorage.setItem("authType", authType);
-    window.localStorage.setItem("authUrl", authUrl);
-    window.localStorage.setItem("name", "");
-    window.localStorage.setItem("email", "");
+  const Submit = () => {
+    if (IsOtp) {
+      Verify();
+    } else if (insideRegister) {
+      Register();
+    } else {
+      Login();
+    }
+  };
 
+  const Verify = async () => {
+    try {
+      var id = toast.loading("Verifying...");
+      var data = {
+        email: document.querySelector('input[type="email"]').value,
+        otp: document.querySelector('input[type="text"]').value,
+      };
+      console.log(data);
 
-    // authType = 0;
+      await API.post("/auth/verify-otp", data)
 
-    setAuthType(1);
-    setAuthUrl("/compDashboard");
-  }, []);
+        .then((response) => {
+          console.log(response);
+          toast.update(id, {
+            render: "Verification successful",
+            type: "success",
+            isLoading: false,
+            autoClose: 5000,
+          });
+          window.localStorage.setItem("token", response.data.token);
+          window.localStorage.setItem("name", response.data.name);
+          window.localStorage.setItem("email", response.data.email);
+          window.localStorage.setItem("type", response.data.type);
+
+          if (response.data.type === "company") {
+            navigate("/compDashboard");
+          } else if (response.data.type === "user") {
+            navigate("/userDashboard");
+          } else if (response.data.type === "admin") {
+            navigate("/adminDashboard");
+          }
+        })
+        .catch((error) => {
+          toast.update(id, {
+            render:
+              error.response?.data?.message ||
+              error.message ||
+              "Something went wrong :)",
+            type: "error",
+            isLoading: false,
+            autoClose: 5000,
+          });
+        });
+    } catch (error) {
+      console.log(error?.message);
+      toast.update(id, {
+        render: "Something went wrong :)",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    }
+  };
+
+  const Register = async () => {
+    try {
+      var id = toast.loading("Registering...");
+      var data = {
+        email: document.querySelector('input[type="email"]').value,
+        password: document.querySelector('input[type="password"]').value,
+        name: document.querySelector('input[type="text"]')?.value,
+        type: document.querySelector("select").value,
+      };
+      console.log(data);
+      await API.post("/auth/register", data)
+        .then((response) => {
+          console.log(response);
+          toast.update(id, {
+            render: "Registration successful",
+            type: "success",
+            isLoading: false,
+            autoClose: 5000,
+          });
+          setIsOtp(true);
+        })
+        .catch((error) => {
+          toast.update(id, {
+            render:
+              error.response?.data?.message ||
+              error.message ||
+              "Something went wrong :)",
+            type: "error",
+            isLoading: false,
+            autoClose: 5000,
+          });
+        });
+    } catch (error) {
+      console.log(error?.message);
+      toast.update(id, {
+        render: "Something went wrong :)",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    }
+  };
+
+  const Login = async () => {
+    try {
+      var id = toast.loading("Logging in...");
+      var data = {
+        email: document.querySelector('input[type="email"]').value,
+        password: document.querySelector('input[type="password"]').value,
+      };
+      console.log(data);
+      await API.post("/auth/login", data)
+        .then((response) => {
+          toast.update(id, {
+            render: "Login successful",
+            type: "success",
+            isLoading: false,
+            autoClose: 5000,
+          });
+
+          window.localStorage.setItem("token", response.data.token);
+          window.localStorage.setItem("name", response.data.name);
+          window.localStorage.setItem("email", response.data.email);
+          window.localStorage.setItem("type", response.data.type);
+
+          if (response.data.type === "company") {
+            navigate("/compDashboard");
+          } else if (response.data.type === "user") {
+            navigate("/userDashboard");
+          } else if (response.data.type === "admin") {
+            navigate("/adminDashboard");
+          }
+        })
+        .catch((error) => {
+          toast.update(id, {
+            render:
+              error.response?.data?.message ||
+              error.message ||
+              "Something went wrong :)",
+            type: "error",
+            isLoading: false,
+            autoClose: 5000,
+          });
+        });
+    } catch (error) {
+      console.log(error?.message);
+      toast.update(id, {
+        render: "Something went wrong :)",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    }
+  };
 
   return (
     <div
@@ -47,51 +193,37 @@ const Auth = ({ insideRegister, insideCompany }) => {
                     fontFamily: '"Protest Strike", serif',
                   }}
                 >
-                  {insideRegister
-                    ? "SignUp"
-                    : insideCompany
-                    ? "SignUp"
-                    : "Login"}
+                  {IsOtp ? "OTP " : insideRegister ? "SignUp" : "Login"}
                 </h3>
                 <hr />
 
                 <div className="p-3 ">
-                  {insideCompany && (
+                  {IsOtp ? (
                     <>
-                      <p style={{ textAlign: "center", color: "grey" }}>
-                        <Link style={{ color: "grey" }} to={"/register"}>
-                          New user
-                        </Link>
-                      </p>
-
                       <p style={{ textAlign: "center", color: "grey" }}>
                         <Link style={{ color: "grey" }} to={"/login"}>
                           Login
                         </Link>
                       </p>
+
+                      <p style={{ textAlign: "center", color: "grey" }}>
+                        <Link style={{ color: "grey" }} to={"/register"}>
+                          New here
+                        </Link>
+                      </p>
                     </>
-                  )}
-                  {!insideRegister && !insideCompany && (
+                  ) : insideRegister ? (
+                    <p style={{ textAlign: "center", color: "grey" }}>
+                      <Link style={{ color: "grey" }} to={"/login"}>
+                        Login
+                      </Link>
+                    </p>
+                  ) : (
                     <p style={{ textAlign: "center", color: "grey" }}>
                       <Link style={{ color: "grey" }} to={"/register"}>
                         New here
                       </Link>
                     </p>
-                  )}
-                  {insideRegister && (
-                    <>
-                      <p style={{ textAlign: "center", color: "grey" }}>
-                        <Link style={{ color: "grey" }} to={"/register2"}>
-                          New company
-                        </Link>
-                      </p>
-
-                      <p style={{ textAlign: "center", color: "grey" }}>
-                        <Link style={{ color: "grey" }} to={"/login"}>
-                          Login
-                        </Link>
-                      </p>
-                    </>
                   )}
                 </div>
               </div>
@@ -102,18 +234,10 @@ const Auth = ({ insideRegister, insideCompany }) => {
               <div className="d-flex-column w-75  ">
                 <h3>HireVerse</h3>
                 <p>
-                  Sign {insideRegister ? "up" : insideCompany ? "up" : "in"} to
-                  your account
+                  {IsOtp
+                    ? "Verify your email"
+                    : ` Sign ${insideRegister ? "up" : "in"} to your account`}
                 </p>
-
-                {
-                  // inside company
-                  insideCompany && (
-                    <FloatingLabel label="CompanyName" className="mb-3">
-                      <Form.Control type="text" placeholder="CompanyName" />
-                    </FloatingLabel>
-                  )
-                }
 
                 {
                   // inside register
@@ -127,22 +251,38 @@ const Auth = ({ insideRegister, insideCompany }) => {
                 }
                 {/* email */}
                 <FloatingLabel label="E-mail address" className="mb-3">
-                  <Form.Control type="email" placeholder="name@example.com" />
+                  <Form.Control
+                    type="email"
+                    placeholder="name@example.com"
+                    disabled={!IsOtp}
+                  />
                 </FloatingLabel>
                 {/* password */}
-                <FloatingLabel label="Password " className="mb-3">
-                  <Form.Control type="password" placeholder="" />
-                </FloatingLabel>
+                {!IsOtp ? (
+                  <FloatingLabel label="Password " className="mb-3">
+                    <Form.Control type="password" placeholder="" />
+                  </FloatingLabel>
+                ) : (
+                  <FloatingLabel label="OTP " className="mb-3">
+                    <Form.Control type="text" placeholder="enter 6 digit otp" />
+                  </FloatingLabel>
+                )}
+
+                {insideRegister && (
+                  <FloatingLabel label="Type" className="mb-3">
+                    <Form.Select defaultValue="user">
+                      <option value="user">User</option>
+                      <option value="company">Company</option>
+                    </Form.Select>
+                  </FloatingLabel>
+                )}
                 <Link
                   style={{ alignContent: "center" }}
                   className="btn btn-primary  "
-                  to={authUrl}
+                  // to={authUrl}
+                  onClick={Submit}
                 >
-                  {insideRegister
-                    ? "signup"
-                    : insideCompany
-                    ? "signup"
-                    : "Login"}
+                  {IsOtp ? "SUBMIT" : insideRegister ? "signup" : "Login"}
                 </Link>
               </div>
             </div>
