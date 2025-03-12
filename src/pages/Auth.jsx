@@ -92,6 +92,11 @@ const Auth = ({ insideRegister }) => {
             isLoading: false,
             autoClose: 5000,
           });
+
+          const otpInput = document.querySelector('input[type="text"]');
+          if (otpInput) {
+            otpInput.value = "";
+          }
           setIsOtp(true);
         })
         .catch((error) => {
@@ -201,13 +206,27 @@ const Auth = ({ insideRegister }) => {
                   {IsOtp ? (
                     <>
                       <p style={{ textAlign: "center", color: "grey" }}>
-                        <Link style={{ color: "grey" }} to={"/login"}>
+                        <Link
+                          style={{ color: "grey" }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setIsOtp(false);
+                            navigate("/login");
+                          }}
+                        >
                           Login
                         </Link>
                       </p>
 
                       <p style={{ textAlign: "center", color: "grey" }}>
-                        <Link style={{ color: "grey" }} to={"/register"}>
+                        <Link
+                          style={{ color: "grey" }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setIsOtp(false);
+                            navigate("/register");
+                          }}
+                        >
                           New here
                         </Link>
                       </p>
@@ -241,7 +260,7 @@ const Auth = ({ insideRegister }) => {
 
                 {
                   // inside register
-                  insideRegister && (
+                  insideRegister && !IsOtp && (
                     <>
                       <FloatingLabel label="Username" className="mb-3">
                         <Form.Control type="text" placeholder="UserName" />
@@ -264,11 +283,11 @@ const Auth = ({ insideRegister }) => {
                   </FloatingLabel>
                 ) : (
                   <FloatingLabel label="OTP " className="mb-3">
-                    <Form.Control type="text" placeholder="enter 6 digit otp" />
+                    <Form.Control type="text" placeholder="enter 6 digit otp" name="otp" />
                   </FloatingLabel>
                 )}
 
-                {insideRegister && (
+                {insideRegister && !IsOtp && (
                   <FloatingLabel label="Type" className="mb-3">
                     <Form.Select defaultValue="user">
                       <option value="user">User</option>
