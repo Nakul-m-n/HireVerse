@@ -20,8 +20,8 @@ const Auth = ({ insideRegister }) => {
   };
 
   const Verify = async () => {
+    var id = toast.loading("Verifying...");
     try {
-      var id = toast.loading("Verifying...");
       var data = {
         email: document.querySelector('input[type="email"]').value,
         otp: document.querySelector('input[type="number"]').value,
@@ -64,7 +64,7 @@ const Auth = ({ insideRegister }) => {
         });
     } catch (error) {
       console.log(error?.message);
-      toast.update(id, {
+      toast.error(id, {
         render: "Something went wrong :)",
         type: "error",
         isLoading: false,
@@ -74,8 +74,8 @@ const Auth = ({ insideRegister }) => {
   };
 
   const Register = async () => {
+    var id = toast.loading("Registering...");
     try {
-      var id = toast.loading("Registering...");
       var data = {
         email: document.querySelector('input[type="email"]').value,
         password: document.querySelector('input[type="password"]').value,
@@ -118,8 +118,8 @@ const Auth = ({ insideRegister }) => {
   };
 
   const Login = async () => {
+    var id = toast.loading("Logging in...");
     try {
-      var id = toast.loading("Logging in...");
       var data = {
         email: document.querySelector('input[type="email"]').value,
         password: document.querySelector('input[type="password"]').value,
@@ -259,7 +259,11 @@ const Auth = ({ insideRegister }) => {
                   insideRegister && !IsOtp && (
                     <>
                       <FloatingLabel label="Username" className="mb-3">
-                        <Form.Control type="text" placeholder="UserName" name="name" />
+                        <Form.Control
+                          type="text"
+                          placeholder="UserName"
+                          name="name"
+                        />
                       </FloatingLabel>
                     </>
                   )
@@ -279,7 +283,11 @@ const Auth = ({ insideRegister }) => {
                   </FloatingLabel>
                 ) : (
                   <FloatingLabel label="OTP " className="mb-3">
-                    <Form.Control type="number" placeholder="enter 6 digit otp" name="otp" />
+                    <Form.Control
+                      type="number"
+                      placeholder="enter 6 digit otp"
+                      name="otp"
+                    />
                   </FloatingLabel>
                 )}
 

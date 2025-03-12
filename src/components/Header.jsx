@@ -6,9 +6,10 @@ import {
   Navbar,
   Offcanvas,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = ({ insideDashboard, insideCompDash, setTab }) => {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -22,16 +23,28 @@ const Header = ({ insideDashboard, insideCompDash, setTab }) => {
         <Container>
           <Link to={"/"} style={{ textDecoration: "none" }}>
             <Navbar.Brand className="text-light fw-bolder ">
-              <i class="fa-solid fa-computer"></i> HireVerse
+              <i className="fa-solid fa-computer"></i> HireVerse
             </Navbar.Brand>
           </Link>
+
+          <span className="text-light fw-bold me-3">
+            Welcome, {localStorage.getItem("name")}
+          </span>
+
           {(insideDashboard || insideCompDash) && (
             <div className="ms-auto">
-              <button style={{ color: " white" }} className="btn btn-link  ">
+              <button
+                style={{ color: " white" }}
+                className="btn btn-link"
+                onClick={() => {
+                  localStorage.clear();
+                  navigate("/login");
+                }}
+              >
                 Log Out <i className="fa-solid fa-right-from-bracket"></i>
               </button>
               <Button variant="primary" onClick={handleShow} className="ms-5">
-                <i class="fa-solid fa-bars"></i>
+                <i className="fa-solid fa-bars"></i>
               </Button>
             </div>
           )}
