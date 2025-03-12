@@ -254,7 +254,7 @@ const Auth = ({ insideRegister }) => {
                   <Form.Control
                     type="email"
                     placeholder="name@example.com"
-                    disabled={!IsOtp}
+                    disabled={IsOtp}
                   />
                 </FloatingLabel>
                 {/* password */}
