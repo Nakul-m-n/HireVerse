@@ -26,10 +26,7 @@ const Auth = ({ insideRegister }) => {
         email: document.querySelector('input[type="email"]').value,
         otp: document.querySelector('input[type="number"]').value,
       };
-      console.log(data);
-
       await API.post("/auth/verify-otp", data)
-
         .then((response) => {
           console.log(response);
           toast.update(id, {
@@ -82,7 +79,6 @@ const Auth = ({ insideRegister }) => {
         name: document.querySelector('input[type="text"]')?.value,
         type: document.querySelector("select").value,
       };
-      console.log(data);
       await API.post("/auth/register", data)
         .then((response) => {
           console.log(response);
@@ -124,7 +120,6 @@ const Auth = ({ insideRegister }) => {
         email: document.querySelector('input[type="email"]').value,
         password: document.querySelector('input[type="password"]').value,
       };
-      console.log(data);
       await API.post("/auth/login", data)
         .then((response) => {
           toast.update(id, {

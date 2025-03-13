@@ -24,7 +24,6 @@ const Jobs = () => {
 
       var filter = res?.data?.map((key) => String(key).toLowerCase().trim());
       filter = [...new Set(filter)];
-      console.log(filter);
       setKeys(filter);
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
@@ -34,7 +33,6 @@ const Jobs = () => {
   async function fetchData() {
     try {
       const res = await api.get("/user/jobs");
-      console.log(res?.data);
       setJobs(res?.data);
       setFilteredJobs(res?.data);
     } catch (error) {
