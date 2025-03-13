@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
+import api from "../../API";
+import { toast } from "react-toastify";
 
 const Dashbord = () => {
+  const [data, setData] = useState({
+    userCount: 0,
+    companyCount: 0,
+    jobCount: 0,
+  });
+
+  useEffect(() => {
+    async function callAPI() {
+      await api
+        .get("/admin/totalCounts")
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
+    }
+    callAPI();
+  }, []);
   return (
     <div className="container">
       <h1 className="fw-bolder mt-5">DashBoard</h1>
@@ -15,7 +36,7 @@ const Dashbord = () => {
           <Card.Body>
             <Card.Title>User </Card.Title>
             <Card.Text>
-              Total User : <span>54</span>
+              Total User : <span>{data?.userCount}</span>
             </Card.Text>
           </Card.Body>
         </Card>
@@ -29,7 +50,7 @@ const Dashbord = () => {
           <Card.Body>
             <Card.Title> Company </Card.Title>
             <Card.Text>
-              Total Commpany's: <span>5</span>
+              Total Commpany's: <span>{data?.companyCount}</span>
             </Card.Text>
           </Card.Body>
         </Card>
@@ -43,7 +64,7 @@ const Dashbord = () => {
           <Card.Body>
             <Card.Title> job's </Card.Title>
             <Card.Text>
-              Total Jobs: <span>10</span>
+              Total Jobs: <span>{data?.jobCount}</span>
             </Card.Text>
           </Card.Body>
         </Card>

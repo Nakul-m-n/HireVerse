@@ -1,7 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button, Modal, Form, Container, Row, Col } from "react-bootstrap";
+import api from "../../API";
+import { toast } from "react-toastify";
 
 const ManageCompany = () => {
+
+  useEffect(() => {
+    async function callAPI() {
+      await api
+        .get("/admin/showAllCompanies")
+        .then((res) => {
+          setCompanies(res.data);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
+    }
+    callAPI();
+  }, []);
   const [companies, setCompanies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showBlocked, setShowBlocked] = useState(false);
@@ -26,20 +42,20 @@ const ManageCompany = () => {
   };
 
   const handleEditCompany = () => {
-    setCompanies(companies.map(company => company.id === editCompany.id ? editCompany : company));
+    setCompanies(companies.map(company => company._id === editCompany._id ? editCompany : company));
     handleEditClose();
   };
 
   const handleDeleteCompany = (id) => {
-    setCompanies(companies.filter((company) => company.id !== id));
+    setCompanies(companies.filter((company) => company._id !== id));
   };
 
   const handleBlockCompany = (id) => {
-    setCompanies(companies.map(company => company.id === id ? { ...company, blocked: !company.blocked } : company));
+    setCompanies(companies.map(company => company._id === id ? { ...company, blocked: !company.blocked } : company));
   };
 
   const handleVerifyCompany = (id) => {
-    setCompanies(companies.map(company => company.id === id ? { ...company, verified: true } : company));
+    setCompanies(companies.map(company => company._id === id ? { ...company, verified: true } : company));
   };
 
   const filteredCompanies = companies.filter(company =>
@@ -79,29 +95,29 @@ const ManageCompany = () => {
             </thead>
             <tbody>
               {filteredCompanies.map((company) => (
-                <tr key={company.id} className={company.blocked ? "table-danger" : ""}>
-                  <td>{company.id}</td>
+                <tr key={company._id} className={company.blocked ? "table-danger" : ""}>
+                  <td>{company._id}</td>
                   <td>{company.name}</td>
                   <td>{company.email}</td>
                   <td>
                     <Button variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(company)}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Button>
-                    <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteCompany(company.id)}>
+                    <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteCompany(company._id)}>
                       <i className="fa-solid fa-trash"></i>
                     </Button>
                     {!showBlocked && (
                       <>
-                        <Button variant="dark" size="sm" className="me-2" onClick={() => handleBlockCompany(company.id)}>
+                        <Button variant="dark" size="sm" className="me-2" onClick={() => handleBlockCompany(company._id)}>
                           <i className="fa-solid fa-ban"></i>
                         </Button>
-                        <Button variant="success" size="sm" onClick={() => handleVerifyCompany(company.id)} disabled={company.verified}>
+                        <Button variant="success" size="sm" onClick={() => handleVerifyCompany(company._id)} disabled={company.verified}>
                           {company.verified ? "Verified" : "Verify"}
                         </Button>
                       </>
                     )}
                     {showBlocked && (
-                      <Button variant="success" size="sm" onClick={() => handleBlockCompany(company.id)}>
+                      <Button variant="success" size="sm" onClick={() => handleBlockCompany(company._id)}>
                         Unblock
                       </Button>
                     )}

@@ -129,47 +129,54 @@ const JobRequest = () => {
                 <h2>No Users Found</h2>
               </div>
             )}
-            <div className="row">
+            <div className="row d-flex justify-content-center">
               {users.map((user, index) => (
-                <Card className="my-3 " style={{ width: "13rem" }} key={index}>
-                  <Card.Img
-                    variant="top"
-                    src="https://www.w3schools.com/howto/img_avatar.png"
-                  />
-                  <Card.Body>
-                    <Card.Title>{user._user.name}</Card.Title>
-                    <Card.Text>
-                      <small>{user._user.email}</small>
-                      <br />
-                      {user?.job && (
-                        <small>
-                          <b>Job:</b> {user.job}
-                        </small>
-                      )}
-                      <br />
-                    </Card.Text>
-                    <div className="d-flex justify-content-between">
-                      <Button
-                        variant="outline-primary"
-                        onClick={() => toggleBookmark(user)}
-                        disabled={filter === "all"}
-                        className="border-0"
-                      >
-                        <i
-                          className={`fa-solid fa-bookmark ${
-                            user._doc.isSelected ? "text-warning" : ""
-                          }`}
-                        ></i>
-                      </Button>
-                      <Button
-                        variant="info"
-                        onClick={() => handleSeeMore(user._user._id)}
-                      >
-                        See More
-                      </Button>
-                    </div>
-                  </Card.Body>
-                </Card>
+                <div
+                  className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+                  key={index}
+                >
+                  <Card className="my-3 shadow w-100">
+                    <Card.Img
+                      className="my-2 img-fluid mx-auto"
+                      variant="top"
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      style={{ maxWidth: "150px", borderRadius: "50%" }}
+                    />
+                    <Card.Body className="text-center">
+                      <Card.Title>{user._user.name}</Card.Title>
+                      <Card.Text>
+                        <small>{user._user.email}</small>
+                        <br />
+                        {user?.job && (
+                          <small>
+                            <b>Job:</b> {user.job}
+                          </small>
+                        )}
+                        <br />
+                      </Card.Text>
+                      <div className="d-flex justify-content-between">
+                        <Button
+                          variant="outline-primary"
+                          onClick={() => toggleBookmark(user)}
+                          disabled={filter === "all"}
+                          className="border-0"
+                        >
+                          <i
+                            className={`fa-solid fa-bookmark ${
+                              user._doc.isSelected ? "text-warning" : ""
+                            }`}
+                          ></i>
+                        </Button>
+                        <Button
+                          variant="info"
+                          onClick={() => handleSeeMore(user._user._id)}
+                        >
+                          See More
+                        </Button>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </div>
               ))}
             </div>
           </div>

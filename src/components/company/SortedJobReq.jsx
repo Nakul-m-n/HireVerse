@@ -81,12 +81,20 @@ const SortedJobReq = () => {
 
   return (
     <>
-      <div className="container-fluid" style={{ paddingTop: "100px", minHeight: "100vh" }}>
+      <div
+        className="container-fluid"
+        style={{ paddingTop: "100px", minHeight: "100vh" }}
+      >
         <div className="d-flex justify-content-between align-items-center mx-5">
           <h2 className="m-5">Sorted Job Request&apos;</h2>
 
           <div className="d-flex">
-            <Form.Select className="me-2" value={filter} onChange={handleFilterChange} defaultValue={"all"}>
+            <Form.Select
+              className="me-2"
+              value={filter}
+              onChange={handleFilterChange}
+              defaultValue={"all"}
+            >
               <option value="all">All</option>
               {keys.map((key) => (
                 <option key={key.id} value={key.id}>
@@ -103,36 +111,61 @@ const SortedJobReq = () => {
         <div style={{ minHeight: "100vh" }}>
           <div className="container">
             {!users.length && (
-              <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ minHeight: "100vh" }}
+              >
                 <h2>No Users Found</h2>
               </div>
             )}
-            <div className="row">
+            <div className="row d-flex justify-content-center">
               {users.map((user, index) => (
-                <Card className="my-3" style={{ width: "13rem" }} key={index}>
-                  <Card.Img variant="top" src="https://www.w3schools.com/howto/img_avatar.png" />
-                  <Card.Body>
-                    <Card.Title>{user._user.name}</Card.Title>
-                    <Card.Text>
-                      <small>{user._user.email}</small>
-                      <br />
-                      {user?.job && (
-                        <small>
-                          <b>Job:</b> {user.job}
-                        </small>
-                      )}
-                      <br />
-                    </Card.Text>
-                    <div className="d-flex justify-content-between">
-                      <Button variant="outline-primary" onClick={() => toggleBookmark(user)} disabled={filter === "all"} className="border-0">
-                        <i className={`fa-solid fa-bookmark ${user._doc.isSelected ? "text-warning" : ""}`}></i>
-                      </Button>
-                      <Button variant="info" onClick={() => handleSeeMore(user._user._id)}>
-                        See More
-                      </Button>
-                    </div>
-                  </Card.Body>
-                </Card>
+                <div
+                  className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+                  key={index}
+                >
+                  <Card className="my-3 shadow w-100">
+                    <Card.Img
+                      className="mt-2 img-fluid mx-auto"
+                      variant="top"
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      style={{ maxWidth: "150px", borderRadius: "50%" }}
+                    />
+                    <Card.Body className="text-center">
+                      <Card.Title>{user._user.name}</Card.Title>
+                      <Card.Text>
+                        <small>{user._user.email}</small>
+                        <br />
+                        {user?.job && (
+                          <small>
+                            <b>Job:</b> {user.job}
+                          </small>
+                        )}
+                        <br />
+                      </Card.Text>
+                      <div className="d-flex justify-content-between">
+                        <Button
+                          variant="outline-primary"
+                          onClick={() => toggleBookmark(user)}
+                          disabled={filter === "all"}
+                          className="border-0"
+                        >
+                          <i
+                            className={`fa-solid fa-bookmark ${
+                              user._doc.isSelected ? "text-warning" : ""
+                            }`}
+                          ></i>
+                        </Button>
+                        <Button
+                          variant="info"
+                          onClick={() => handleSeeMore(user._user._id)}
+                        >
+                          See More
+                        </Button>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </div>
               ))}
             </div>
           </div>
@@ -146,10 +179,18 @@ const SortedJobReq = () => {
         <Modal.Body>
           {selectedUser ? (
             <>
-              <p><b>Name:</b> {selectedUser.name}</p>
-              <p><b>Email:</b> {selectedUser.email}</p>
-              <p><b>Phone:</b> {selectedUser.phone || "N/A"}</p>
-              <p><b>Address:</b> {selectedUser.address || "N/A"}</p>
+              <p>
+                <b>Name:</b> {selectedUser.name}
+              </p>
+              <p>
+                <b>Email:</b> {selectedUser.email}
+              </p>
+              <p>
+                <b>Phone:</b> {selectedUser.phone || "N/A"}
+              </p>
+              <p>
+                <b>Address:</b> {selectedUser.address || "N/A"}
+              </p>
             </>
           ) : (
             <p>Loading...</p>

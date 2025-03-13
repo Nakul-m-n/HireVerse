@@ -1,7 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button, Modal, Form, Container, Row, Col } from "react-bootstrap";
+import api from "../../API";
+import { toast } from "react-toastify";
 
 const ManageUser = () => {
+
+  useEffect(() => {
+      async function callAPI() {
+        await api
+          .get("/admin/showAllUsers")
+          .then((res) => {
+            setUsers(res.data);
+          })
+          .catch((err) => {
+            toast.error(err.response.data.message);
+          });
+      }
+      callAPI();
+    }, []);
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showBlocked, setShowBlocked] = useState(false); // Toggle for blocked users view
@@ -26,16 +42,16 @@ const ManageUser = () => {
   };
 
   const handleEditUser = () => {
-    setUsers(users.map(user => user.id === editUser.id ? editUser : user));
+    setUsers(users.map(user => user._id === editUser._id ? editUser : user));
     handleEditClose();
   };
 
   const handleDeleteUser = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
+    setUsers(users.filter((user) => user._id !== id));
   };
 
   const handleBlockUser = (id) => {
-    setUsers(users.map(user => user.id === id ? { ...user, blocked: !user.blocked } : user));
+    setUsers(users.map(user => user._id === id ? { ...user, blocked: !user.blocked } : user));
   };
 
   const filteredUsers = users.filter(user =>
@@ -75,24 +91,24 @@ const ManageUser = () => {
             </thead>
             <tbody>
               {filteredUsers.map((user) => (
-                <tr key={user.id} className={user.blocked ? "table-danger" : ""}>
-                  <td>{user.id}</td>
+                <tr key={user._id} className={user.blocked ? "table-danger" : ""}>
+                  <td>{user._id}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>
                     <Button variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(user)}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Button>
-                    <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteUser(user.id)}>
+                    <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteUser(user._id)}>
                       <i className="fa-solid fa-trash"></i>
                     </Button>
                     {!showBlocked && ( // Show block button only in normal user view
-                      <Button variant="dark" size="sm" onClick={() => handleBlockUser(user.id)}>
+                      <Button variant="dark" size="sm" onClick={() => handleBlockUser(user._id)}>
                         <i className="fa-solid fa-ban"></i>
                       </Button>
                     )}
                     {showBlocked && ( // Show unblock button only in blocked user view
-                      <Button variant="success" size="sm" onClick={() => handleBlockUser(user.id)}>
+                      <Button variant="success" size="sm" onClick={() => handleBlockUser(user._id)}>
                         Unblock
                       </Button>
                     )}
