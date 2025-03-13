@@ -174,32 +174,33 @@ const Jobs = () => {
             {filteredJobs.map((job) => (
               <Card key={job._id} className="shadow mb-3">
                 <Card.Body>
-                  <div className="d-flex align-items-center">
-                    <img
-                      width={100}
-                      height={100}
-                      src={tcs}
-                      alt="Company Logo"
-                    />
-                    <div className="ms-3">
-                      <Card.Title>{job.title}</Card.Title>
-                      <br />
+                  <div className="row align-items-center">
+                    {/* Company Logo */}
+                    <div className="col-12 col-md-4 text-center">
+                      <img src={tcs} alt="Company Logo" className="img-fluid" />
+                    </div>
 
-                      <div className="d-flex justify-content-around align-items-center">
-                        <p className="d-flex align-items-center">
-                          <i className="fa-regular fa-clock mr-2"></i>{" "}
+                    {/* Job Details */}
+                    <div className="col-12 col-md-8 mt-3 mt-md-0">
+                      <Card.Title>{job.title}</Card.Title>
+
+                      {/* Job Information */}
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <p className="d-flex align-items-center me-3">
+                          <i className="fa-regular fa-clock me-2"></i>{" "}
                           {job.jobTime}
                         </p>
-                        <p className="d-flex align-items-center">
-                          <i className="fa-solid fa-house-laptop mr-2"></i>{" "}
+                        <p className="d-flex align-items-center me-3">
+                          <i className="fa-solid fa-house-laptop me-2"></i>{" "}
                           {job.jobType}
                         </p>
                         <p className="d-flex align-items-center">
-                          <i className="fa-solid fa-building mr-2"></i>
-                          {"  "}
-                          {" " + job.companyId.name || "Company Name"}
+                          <i className="fa-solid fa-building me-2"></i>{" "}
+                          {job.companyId.name || "Company Name"}
                         </p>
                       </div>
+
+                      {/* Skills */}
                       <div className="d-flex flex-wrap">
                         {job.skills.map((skill, idx) => (
                           <span key={idx} className="badge bg-primary m-1">
@@ -207,28 +208,27 @@ const Jobs = () => {
                           </span>
                         ))}
                       </div>
-                      <br />
-                      <div>
-                        <div className="d-flex justify-content-between " />
-                        <p>{job.description}</p>
-                      </div>
+
+                      {/* Description */}
+                      <p className="mt-2">{job.description}</p>
+
+                      {/* Location and Salary */}
                       <p>
                         <strong>
-                          {" "}
-                          <i className="fa-solid fa-location-dot mr-2"></i>{" "}
+                          <i className="fa-solid fa-location-dot me-2"></i>{" "}
                           Location:
                         </strong>{" "}
                         {job.location}
                       </p>
                       <p>
                         <strong>
-                          {" "}
-                          <i className="fa-solid fa-sack-dollar mr-2"></i>{" "}
+                          <i className="fa-solid fa-sack-dollar me-2"></i>{" "}
                           Salary:
                         </strong>{" "}
                         {job.salary} Monthly
                       </p>
 
+                      {/* Qualifications */}
                       <div className="mt-3">
                         <h6>Qualifications:</h6>
                         <ul>
@@ -239,18 +239,24 @@ const Jobs = () => {
                       </div>
                     </div>
                   </div>
+
                   <hr />
-                  <div className="d-flex justify-content-between align-items-center">
+
+                  {/* Footer Section */}
+                  <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
                     <p
+                      className="font-weight-bold text-center text-md-start"
                       style={{ fontFamily: "monospace" }}
-                      className="font-weight-bold"
                     >
                       <i className="fa-solid fa-calendar-days"></i> Last date:{" "}
                       <span>{DateConvert(job.tillDate)}</span>
                     </p>
-                    <div className="d-flex">
-                      <Button onClick={() => handleShow(job)}>Apply now</Button>
-                    </div>
+                    <Button
+                      onClick={() => handleShow(job)}
+                      className="mt-2 mt-md-0"
+                    >
+                      Apply now
+                    </Button>
                   </div>
                 </Card.Body>
               </Card>

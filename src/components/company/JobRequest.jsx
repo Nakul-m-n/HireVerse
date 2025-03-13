@@ -17,13 +17,12 @@ const JobRequest = () => {
 
   useEffect(() => {
     fetchData();
+    fetchData_("all");
   }, []);
 
   useEffect(() => {
-    const usersList = filteredJobs.flatMap((job) => job.requestedUsers);
-    console.log(usersList);
-    setUsers(usersList);
-  }, [filteredJobs]);
+    fetchData_(filter);
+  }, [filter]);
 
   async function fetchData() {
     try {
@@ -40,7 +39,7 @@ const JobRequest = () => {
   async function fetchData_(id) {
     try {
       const res = await api.get("/company/job_users/" + id);
-     console.log(res?.data);
+      setUsers(res?.data);
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
@@ -91,39 +90,49 @@ const JobRequest = () => {
 
         <div style={{ minHeight: "100vh" }}>
           <div className="container">
-            {!filteredJobs.length && (
+            {!users.length && (
               <div
                 className="d-flex justify-content-center align-items-center"
                 style={{ minHeight: "100vh" }}
               >
-                <h2>No Jobs Found</h2>
+                <h2>No Users Found</h2>
               </div>
             )}
-            {filteredJobs.map((job, index) => (
-              <Card className="my-3 " style={{ width: "13rem" }} key={index}>
-                <Card.Img
-                  variant="top"
-                  src="https://www.w3schools.com/howto/img_avatar.png"
-                />
-                <Card.Body>
-                  <Card.Title>Jhon carter</Card.Title>
-                  <Card.Text>
-                    Placed at abc company as React Developer with 3.2 LPA
-                  </Card.Text>
-                  <Button
-                    variant="outline-primary"
-                    onClick={toggleBookmark}
-                    className="border-0"
-                  >
-                    <i
-                      className={`fa-solid fa-bookmark ${
-                        bookmarked ? "text-warning" : ""
-                      }`}
-                    ></i>
-                  </Button>
-                </Card.Body>
-              </Card>
-            ))}
+            <div className="row">
+              {users.map((user, index) => (
+                <Card className="my-3 " style={{ width: "13rem" }} key={index}>
+                  <Card.Img
+                    variant="top"
+                    src="https://www.w3schools.com/howto/img_avatar.png"
+                  />
+                  <Card.Body>
+                    <Card.Title>{user.name}</Card.Title>
+                    <Card.Text>
+                      <small>{user.email}</small>
+                      <br />
+                      {user?.job && (
+                        <small>
+                          <b>Job:</b> {user.job}
+                        </small>
+                      )}
+                      <br />
+                    </Card.Text>
+                    <Button
+                      variant="outline-primary"
+                      onClick={toggleBookmark}
+                      disabled={filter === "all"}
+                      className="border-0"
+                    >
+                      <i
+                        className={`fa-solid fa-bookmark ${
+                          bookmarked ? "text-warning" : ""
+                        }`}
+                      ></i>
+                    </Button>
+                  </Card.Body>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </div>
