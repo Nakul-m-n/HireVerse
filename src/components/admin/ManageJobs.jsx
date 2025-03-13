@@ -80,7 +80,7 @@ const ManageJobs = () => {
   const filteredJobs = jobs.filter(
     (job) =>
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (showBlocked ? job.blocked : !job.blocked)
+      (showBlocked ? job.isBlocked : !job.isBlocked)
   );
 
   return (

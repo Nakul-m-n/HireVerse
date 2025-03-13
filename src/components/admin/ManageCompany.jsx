@@ -109,7 +109,7 @@ const ManageCompany = () => {
   const filteredCompanies = companies.filter(
     (company) =>
       company.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (showBlocked ? company.blocked : !company.blocked)
+      (showBlocked ? company.isBlocked : !company.isBlocked)
   );
 
   return (
