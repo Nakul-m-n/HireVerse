@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import CompProfile from "../components/company/CompProfile";
 import JobVacancy from "../components/company/JobVacancy";
 import JobVacDetials from "../components/company/JobVacDetials";
 import JobRequest from "../components/company/JobRequest";
 import SortedJobReq from "../components/company/SortedJobReq";
+import { useNavigate } from "react-router-dom";
 
 const CompDashboard = () => {
   var [tab, setTab] = useState(0);
+  const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "Company Dashboard";
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    } else {
+      var role = localStorage.getItem("type");
+      if (role !== "company") {
+        navigate("/login");
+      }
+    }
+  }, []);
   return (
     <>
       <Header insideCompDash={true} setTab={setTab} />

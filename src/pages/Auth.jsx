@@ -19,6 +19,18 @@ const Auth = ({ insideRegister }) => {
     }
   };
 
+  useEffect(() => {
+    if (window.localStorage.getItem("token")) {
+      if (window.localStorage.getItem("type") === "company") {
+        navigate("/compDashboard");
+      } else if (window.localStorage.getItem("type") === "user") {
+        navigate("/userDashboard");
+      } else if (window.localStorage.getItem("type") === "admin") {
+        navigate("/admin");
+      }
+    }
+  });
+
   const Verify = async () => {
     var id = toast.loading("Verifying...");
     try {
@@ -45,7 +57,7 @@ const Auth = ({ insideRegister }) => {
           } else if (response.data.type === "user") {
             navigate("/userDashboard");
           } else if (response.data.type === "admin") {
-            navigate("/adminDashboard");
+            navigate("/admin");
           }
         })
         .catch((error) => {
@@ -139,7 +151,7 @@ const Auth = ({ insideRegister }) => {
           } else if (response.data.type === "user") {
             navigate("/userDashboard");
           } else if (response.data.type === "admin") {
-            navigate("/adminDashboard");
+            navigate("/admin");
           }
         })
         .catch((error) => {
@@ -264,9 +276,10 @@ const Auth = ({ insideRegister }) => {
                   )
                 }
                 {/* email */}
-                <FloatingLabel label="E-mail address" className="mb-3">
+                <FloatingLabel label="email" className="mb-3">
                   <Form.Control
                     type="email"
+                    name="email"
                     placeholder="name@example.com"
                     disabled={IsOtp}
                   />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Row,
@@ -16,10 +16,21 @@ import Dashbord from "../components/admin/Dashbord";
 import ManageUser from "../components/admin/ManageUser";
 import ManageCompany from "../components/admin/ManageCompany";
 import ManageJobs from "../components/admin/ManageJobs";
-
+import { useNavigate } from "react-router-dom";
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "Admin Dashboard";
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    } else {
+      var role = localStorage.getItem("type");
+      if (role !== "admin") {
+        navigate("/login");
+      }
+    }
+  }, []);
 
-  
   const [activeItem, setActiveItem] = useState("Dashboard");
 
   return (
@@ -58,16 +69,27 @@ const AdminDashboard = () => {
                   {item}
                 </ListGroupItem>
               ))}
+              <ListGroupItem
+                key={"logout"}
+                style={{ cursor: "pointer" }}
+                active={false}
+                onClick={() => {
+                  localStorage.clear();
+                  navigate("/login");
+                }}
+                className="w-100 text-center"
+              >
+                {"LOG OUT"}
+              </ListGroupItem>
             </ListGroup>
           </Col>
 
           {/* Main Content */}
-          <Col   lg={9} sm={8} xs={12} className="main-content">
-          
-            { activeItem=="Dashboard" &&  <Dashbord/> }
-            { activeItem=="Manage User" &&  <ManageUser/> }
-            {activeItem=="Manage Company"  && <ManageCompany/>}
-            {activeItem=="Manage Jobs"  && <ManageJobs/>}
+          <Col lg={9} sm={8} xs={12} className="main-content">
+            {activeItem == "Dashboard" && <Dashbord />}
+            {activeItem == "Manage User" && <ManageUser />}
+            {activeItem == "Manage Company" && <ManageCompany />}
+            {activeItem == "Manage Jobs" && <ManageJobs />}
           </Col>
 
           {/* Custom CSS */}

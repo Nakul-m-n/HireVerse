@@ -1,25 +1,17 @@
-import React from 'react'
-import { Card } from 'react-bootstrap'
+import React from "react";
+import { Card } from "react-bootstrap";
 
 const Dashbord = () => {
-
-    
   return (
-    <div className='container'>
-        <h1 className='fw-bolder mt-5'>
-            DashBoard 
-        </h1>
-        <div className='d-flex justify-content-around align-items-center'>
-                        
-    
-
+    <div className="container">
+      <h1 className="fw-bolder mt-5">DashBoard</h1>
+      <div className="d-flex justify-content-around align-items-center">
         <Card
           bg={"primary"}
-          text={ 'white'}
-          style={{ width: '18rem' }}
+          text={"white"}
+          style={{ width: "18rem" }}
           className="mb-2"
         >
-         
           <Card.Body>
             <Card.Title>User </Card.Title>
             <Card.Text>
@@ -30,26 +22,24 @@ const Dashbord = () => {
 
         <Card
           bg={"primary"}
-          text={ 'white'}
-          style={{ width: '18rem' }}
+          text={"white"}
+          style={{ width: "18rem" }}
           className="mb-2"
         >
-          
           <Card.Body>
             <Card.Title> Company </Card.Title>
             <Card.Text>
-             Total Commpany's: <span>5</span>
+              Total Commpany's: <span>5</span>
             </Card.Text>
           </Card.Body>
         </Card>
 
         <Card
           bg={"primary"}
-          text={ 'white'}
-          style={{ width: '18rem' }}
+          text={"white"}
+          style={{ width: "18rem" }}
           className="mb-2"
         >
-          
           <Card.Body>
             <Card.Title> job's </Card.Title>
             <Card.Text>
@@ -57,9 +47,9 @@ const Dashbord = () => {
             </Card.Text>
           </Card.Body>
         </Card>
-        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashbord
+export default Dashbord;
