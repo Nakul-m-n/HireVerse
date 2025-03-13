@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Card, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import api from "../../API";
 
-const JobRequest = () => { 
+const JobRequest = () => {
   const [keys, setKeys] = useState([]);
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const toggleBookmark = async (user_) => {
     var jobId = filter;
@@ -78,6 +80,16 @@ const JobRequest = () => {
     fetchData_(filterType);
   };
 
+  const handleSeeMore = async (userId) => {
+    try {
+      const res = await api.get(`/company/user_details/${userId}`);
+      setSelectedUser(res.data);
+      setShowModal(true);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
+  };
+
   return (
     <>
       <div
@@ -136,18 +148,26 @@ const JobRequest = () => {
                       )}
                       <br />
                     </Card.Text>
-                    <Button
-                      variant="outline-primary"
-                      onClick={() => toggleBookmark(user)}
-                      disabled={filter === "all"}
-                      className="border-0"
-                    >
-                      <i
-                        className={`fa-solid fa-bookmark ${
-                          user._doc.isSelected ? "text-warning" : ""
-                        }`}
-                      ></i>
-                    </Button>
+                    <div className="d-flex justify-content-between">
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => toggleBookmark(user)}
+                        disabled={filter === "all"}
+                        className="border-0"
+                      >
+                        <i
+                          className={`fa-solid fa-bookmark ${
+                            user._doc.isSelected ? "text-warning" : ""
+                          }`}
+                        ></i>
+                      </Button>
+                      <Button
+                        variant="info"
+                        onClick={() => handleSeeMore(user._user._id)}
+                      >
+                        See More
+                      </Button>
+                    </div>
                   </Card.Body>
                 </Card>
               ))}
@@ -155,6 +175,37 @@ const JobRequest = () => {
           </div>
         </div>
       </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>User Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedUser ? (
+            <>
+              <p>
+                <b>Name:</b> {selectedUser.name}
+              </p>
+              <p>
+                <b>Email:</b> {selectedUser.email}
+              </p>
+              <p>
+                <b>Phone:</b> {selectedUser.phone || "N/A"}
+              </p>
+              <p>
+                <b>Address:</b> {selectedUser.address || "N/A"}
+              </p>
+            </>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

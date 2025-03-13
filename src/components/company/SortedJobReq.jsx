@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Card, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import api from "../../API";
 
@@ -7,6 +7,8 @@ const SortedJobReq = () => {
   const [keys, setKeys] = useState([]);
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const toggleBookmark = async (user_) => {
     var jobId = filter;
@@ -45,7 +47,6 @@ const SortedJobReq = () => {
   async function fetchData() {
     try {
       const res = await api.get("/company/job");
-
       var keys = res?.data?.map((job) => ({ title: job.title, id: job._id }));
       setKeys(keys);
     } catch (error) {
@@ -56,7 +57,6 @@ const SortedJobReq = () => {
   async function fetchData_(id) {
     try {
       const res = await api.get("/company/job_users/" + id);
-      console.log(res?.data);
       var data = res?.data?.filter((user) => user._doc.isSelected);
       setUsers(data);
     } catch (error) {
@@ -64,36 +64,29 @@ const SortedJobReq = () => {
     }
   }
 
-  const DateConvert = (date) => {
-    date = new Date(date).toLocaleDateString();
-    const [month, day, year] = String(date).split("/");
-    return `${day}/${month}/${year}`;
-  };
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
-    applyFilters(e.target.value);
+    fetchData_(e.target.value);
   };
 
-  const applyFilters = (filterType) => {
-    fetchData_(filterType);
+  const handleSeeMore = async (userId) => {
+    try {
+      const res = await api.get(`/company/user_details/${userId}`);
+      setSelectedUser(res.data);
+      setShowModal(true);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   return (
     <>
-      <div
-        className="container-fluid"
-        style={{ paddingTop: "100px", minHeight: "100vh" }}
-      >
+      <div className="container-fluid" style={{ paddingTop: "100px", minHeight: "100vh" }}>
         <div className="d-flex justify-content-between align-items-center mx-5">
           <h2 className="m-5">Sorted Job Request&apos;</h2>
 
           <div className="d-flex">
-            <Form.Select
-              className="me-2"
-              value={filter}
-              onChange={handleFilterChange}
-              defaultValue={"all"}
-            >
+            <Form.Select className="me-2" value={filter} onChange={handleFilterChange} defaultValue={"all"}>
               <option value="all">All</option>
               {keys.map((key) => (
                 <option key={key.id} value={key.id}>
@@ -110,20 +103,14 @@ const SortedJobReq = () => {
         <div style={{ minHeight: "100vh" }}>
           <div className="container">
             {!users.length && (
-              <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ minHeight: "100vh" }}
-              >
+              <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
                 <h2>No Users Found</h2>
               </div>
             )}
             <div className="row">
               {users.map((user, index) => (
-                <Card className="my-3 " style={{ width: "13rem" }} key={index}>
-                  <Card.Img
-                    variant="top"
-                    src="https://www.w3schools.com/howto/img_avatar.png"
-                  />
+                <Card className="my-3" style={{ width: "13rem" }} key={index}>
+                  <Card.Img variant="top" src="https://www.w3schools.com/howto/img_avatar.png" />
                   <Card.Body>
                     <Card.Title>{user._user.name}</Card.Title>
                     <Card.Text>
@@ -136,18 +123,14 @@ const SortedJobReq = () => {
                       )}
                       <br />
                     </Card.Text>
-                    <Button
-                      variant="outline-primary"
-                      onClick={() => toggleBookmark(user)}
-                      disabled={filter === "all"}
-                      className="border-0"
-                    >
-                      <i
-                        className={`fa-solid fa-bookmark ${
-                          user._doc.isSelected ? "text-warning" : ""
-                        }`}
-                      ></i>
-                    </Button>
+                    <div className="d-flex justify-content-between">
+                      <Button variant="outline-primary" onClick={() => toggleBookmark(user)} disabled={filter === "all"} className="border-0">
+                        <i className={`fa-solid fa-bookmark ${user._doc.isSelected ? "text-warning" : ""}`}></i>
+                      </Button>
+                      <Button variant="info" onClick={() => handleSeeMore(user._user._id)}>
+                        See More
+                      </Button>
+                    </div>
                   </Card.Body>
                 </Card>
               ))}
@@ -155,6 +138,29 @@ const SortedJobReq = () => {
           </div>
         </div>
       </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>User Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedUser ? (
+            <>
+              <p><b>Name:</b> {selectedUser.name}</p>
+              <p><b>Email:</b> {selectedUser.email}</p>
+              <p><b>Phone:</b> {selectedUser.phone || "N/A"}</p>
+              <p><b>Address:</b> {selectedUser.address || "N/A"}</p>
+            </>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
