@@ -154,7 +154,7 @@ const JobVacDetails = () => {
 
   return (
     <div className="container-fluid pt-5" style={{ minHeight: "100vh" }}>
-      <h2 className="text-center">Job Vacancy Details</h2>
+      <h2 className="text-center my-5">Job Vacancy Details</h2>
       <Button className="mb-3" onClick={() => handleShow()}>
         + Add Job
       </Button>
@@ -170,12 +170,21 @@ const JobVacDetails = () => {
         {jobs.map((job) => (
           <Card key={job._id} className="shadow mb-3">
             <Card.Body>
-              <div className="d-flex align-items-center">
-                <img width={100} height={100} src={tcs} alt="Company Logo" />
-                <div className="ms-3">
+              <div className="row align-items-center">
+                {/* Image Section */}
+                <div className="col-12 col-md-4 text-center">
+                  <img
+                    src={tcs}
+                    alt="Company Logo"
+                    className="img-fluid"
+                    style={{ maxWidth: "250px", borderRadius: "10px" }}
+                  />
+                </div>
+
+                {/* Job Details Section */}
+                <div className="col-12 col-md-8">
                   <Card.Title>{job.title}</Card.Title>
-                  <br />
-                  <div className="d-flex justify-content-around align-items-center">
+                  <div className="d-flex flex-wrap justify-content-between">
                     <p className="d-flex align-items-center">
                       <i className="fa-regular fa-clock mr-2"></i> {job.jobTime}
                     </p>
@@ -184,6 +193,7 @@ const JobVacDetails = () => {
                       {job.jobType}
                     </p>
                   </div>
+
                   <div className="d-flex flex-wrap">
                     {job.skills.map((skill, idx) => (
                       <span key={idx} className="badge bg-primary m-1">
@@ -191,22 +201,19 @@ const JobVacDetails = () => {
                       </span>
                     ))}
                   </div>
-                  <br />
-                  <div>
-                    <div className="d-flex justify-content-between " />
-                    <p>{job.description}</p>
-                  </div>
+
+                  <p className="mt-2">{job.description}</p>
+
                   <p>
                     <strong>
-                      {" "}
                       <i className="fa-solid fa-location-dot mr-2"></i>{" "}
                       Location:
                     </strong>{" "}
                     {job.location}
                   </p>
+
                   <p>
                     <strong>
-                      {" "}
                       <i className="fa-solid fa-sack-dollar mr-2"></i> Salary:
                     </strong>{" "}
                     {job.salary} Monthly
@@ -222,24 +229,29 @@ const JobVacDetails = () => {
                   </div>
                 </div>
               </div>
+
               <hr />
-              <div className="d-flex justify-content-between align-items-center">
-                <p
-                  style={{ fontFamily: "monospace" }}
-                  className="font-weight-bold"
-                >
-                  <i className="fa-solid fa-calendar-days"></i> Last date:{" "}
-                  <span>{DateConvert(job.tillDate)}</span>
-                </p>
-                <div className="d-flex">
-                  <Button className="ml-5" onClick={() => OnDelete(job._id)}>
-                    delete
-                  </Button>
-                  <Button
-                    className="ml-1"
-                    variant="warning"
-                    onClick={() => handleShow(job)}
+
+              {/* Footer: Date & Buttons */}
+              <div className="row justify-content-between align-items-center">
+                <div className="col-12 col-md-6">
+                  <p
+                    style={{ fontFamily: "monospace" }}
+                    className="font-weight-bold"
                   >
+                    <i className="fa-solid fa-calendar-days"></i> Last date:{" "}
+                    <span>{DateConvert(job.tillDate)}</span>
+                  </p>
+                </div>
+                <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center">
+                  <Button
+                    className="me-2"
+                    variant="danger"
+                    onClick={() => OnDelete(job._id)}
+                  >
+                    Delete
+                  </Button>
+                  <Button variant="warning" onClick={() => handleShow(job)}>
                     Edit
                   </Button>
                 </div>
