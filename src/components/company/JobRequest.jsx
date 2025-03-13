@@ -3,16 +3,34 @@ import { Button, Card, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import api from "../../API";
 
-const JobRequest = () => {
-  const [bookmarked, setBookmarked] = useState(false);
-  var [jobs, setJobs] = useState([]);
+const JobRequest = () => { 
   const [keys, setKeys] = useState([]);
-  const [filteredJobs, setFilteredJobs] = useState([]);
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("all");
 
-  const toggleBookmark = () => {
-    setBookmarked(!bookmarked);
+  const toggleBookmark = async (user_) => {
+    var jobId = filter;
+    var userId = user_._user._id;
+    var us_ = toast.loading("Please wait...");
+    try {
+      const res = await api.put(`/company/select/${jobId}/${userId}`);
+      if (res.status === 200) {
+        toast.update(us_, {
+          render: "User has been selected",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+        fetchData_(jobId);
+      }
+    } catch (error) {
+      toast.update(us_, {
+        render: error?.response?.data?.message || error.message,
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
+    }
   };
 
   useEffect(() => {
@@ -27,7 +45,6 @@ const JobRequest = () => {
   async function fetchData() {
     try {
       const res = await api.get("/company/job");
-      setJobs(res?.data);
 
       var keys = res?.data?.map((job) => ({ title: job.title, id: job._id }));
       setKeys(keys);
@@ -40,7 +57,8 @@ const JobRequest = () => {
     try {
       const res = await api.get("/company/job_users/" + id);
       console.log(res?.data);
-      setUsers(res?.data);
+      var data = res?.data?.filter((user) => !user._doc.isSelected);
+      setUsers(data);
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
@@ -120,13 +138,13 @@ const JobRequest = () => {
                     </Card.Text>
                     <Button
                       variant="outline-primary"
-                      onClick={toggleBookmark}
+                      onClick={() => toggleBookmark(user)}
                       disabled={filter === "all"}
                       className="border-0"
                     >
                       <i
                         className={`fa-solid fa-bookmark ${
-                          bookmarked ? "text-warning" : ""
+                          user._doc.isSelected ? "text-warning" : ""
                         }`}
                       ></i>
                     </Button>
