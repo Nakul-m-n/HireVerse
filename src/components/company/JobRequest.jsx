@@ -39,6 +39,7 @@ const JobRequest = () => {
   async function fetchData_(id) {
     try {
       const res = await api.get("/company/job_users/" + id);
+      console.log(res?.data);
       setUsers(res?.data);
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
@@ -106,9 +107,9 @@ const JobRequest = () => {
                     src="https://www.w3schools.com/howto/img_avatar.png"
                   />
                   <Card.Body>
-                    <Card.Title>{user.name}</Card.Title>
+                    <Card.Title>{user._user.name}</Card.Title>
                     <Card.Text>
-                      <small>{user.email}</small>
+                      <small>{user._user.email}</small>
                       <br />
                       {user?.job && (
                         <small>
