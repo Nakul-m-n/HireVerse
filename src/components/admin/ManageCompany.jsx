@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Modal, Form, Container, Row, Col } from "react-bootstrap";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
 import api from "../../API";
 import { toast } from "react-toastify";
 
 const ManageCompany = () => {
+  async function callAPI() {
+    await api
+      .get("/admin/showAllCompanies")
+      .then((res) => {
+        setCompanies(res.data);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  }
 
   useEffect(() => {
-    async function callAPI() {
-      await api
-        .get("/admin/showAllCompanies")
-        .then((res) => {
-          setCompanies(res.data);
-        })
-        .catch((err) => {
-          toast.error(err.response.data.message);
-        });
-    }
     callAPI();
   }, []);
   const [companies, setCompanies] = useState([]);
@@ -24,8 +32,20 @@ const ManageCompany = () => {
 
   const [show, setShow] = useState(false);
   const [editShow, setEditShow] = useState(false);
-  const [newCompany, setNewCompany] = useState({ id: "", name: "", email: "", blocked: false, verified: false });
-  const [editCompany, setEditCompany] = useState({ id: "", name: "", email: "", blocked: false, verified: false });
+  const [newCompany, setNewCompany] = useState({
+    id: "",
+    name: "",
+    email: "",
+    blocked: false,
+    verified: false,
+  });
+  const [editCompany, setEditCompany] = useState({
+    id: "",
+    name: "",
+    email: "",
+    blocked: false,
+    verified: false,
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -37,12 +57,22 @@ const ManageCompany = () => {
 
   const handleAddCompany = () => {
     setCompanies([...companies, { ...newCompany, id: companies.length + 1 }]);
-    setNewCompany({ id: "", name: "", email: "", blocked: false, verified: false });
+    setNewCompany({
+      id: "",
+      name: "",
+      email: "",
+      blocked: false,
+      verified: false,
+    });
     handleClose();
   };
 
   const handleEditCompany = () => {
-    setCompanies(companies.map(company => company._id === editCompany._id ? editCompany : company));
+    setCompanies(
+      companies.map((company) =>
+        company._id === editCompany._id ? editCompany : company
+      )
+    );
     handleEditClose();
   };
 
@@ -50,17 +80,36 @@ const ManageCompany = () => {
     setCompanies(companies.filter((company) => company._id !== id));
   };
 
-  const handleBlockCompany = (id) => {
-    setCompanies(companies.map(company => company._id === id ? { ...company, blocked: !company.blocked } : company));
+  const handleBlockCompany = async (id) => {
+    try {
+      await api.post(`/admin/user/block/${id}`);
+      callAPI();
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
+  };
+
+  const handleUnBlockCompany = async (id) => {
+    try {
+      await api.post(`/admin/user/unblock/${id}`);
+      callAPI();
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   const handleVerifyCompany = (id) => {
-    setCompanies(companies.map(company => company._id === id ? { ...company, verified: true } : company));
+    setCompanies(
+      companies.map((company) =>
+        company._id === id ? { ...company, verified: true } : company
+      )
+    );
   };
 
-  const filteredCompanies = companies.filter(company =>
-    company.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (showBlocked ? company.blocked : !company.blocked)
+  const filteredCompanies = companies.filter(
+    (company) =>
+      company.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (showBlocked ? company.blocked : !company.blocked)
   );
 
   return (
@@ -78,9 +127,16 @@ const ManageCompany = () => {
               />
             </Col>
             <Col md={6} className="text-end">
-              <Button variant="primary" className="me-2" onClick={handleShow}>Add Company</Button>
-              <Button variant={showBlocked ? "secondary" : "dark"} onClick={() => setShowBlocked(!showBlocked)}>
-                {showBlocked ? "View Active Companies" : "View Blocked Companies"}
+              <Button variant="primary" className="me-2" onClick={handleShow}>
+                Add Company
+              </Button>
+              <Button
+                variant={showBlocked ? "secondary" : "dark"}
+                onClick={() => setShowBlocked(!showBlocked)}
+              >
+                {showBlocked
+                  ? "View Active Companies"
+                  : "View Blocked Companies"}
               </Button>
             </Col>
           </Row>
@@ -94,30 +150,42 @@ const ManageCompany = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredCompanies.map((company) => (
-                <tr key={company._id} className={company.blocked ? "table-danger" : ""}>
-                  <td>{company._id}</td>
+              {filteredCompanies.map((company, index) => (
+                <tr
+                  key={index}
+                  className={company.isBlocked ? "table-danger" : ""}
+                >
+                  <td>{index}</td>
                   <td>{company.name}</td>
                   <td>{company.email}</td>
                   <td>
-                    <Button variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(company)}>
+                    {/* <Button variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(company)}>
                       <i className="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteCompany(company._id)}>
+                    </Button> */}
+                    {/* <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteCompany(company._id)}>
                       <i className="fa-solid fa-trash"></i>
-                    </Button>
-                    {!showBlocked && (
+                    </Button> */}
+                    {!company.isBlocked && (
                       <>
-                        <Button variant="dark" size="sm" className="me-2" onClick={() => handleBlockCompany(company._id)}>
+                        <Button
+                          variant="dark"
+                          size="sm"
+                          className="me-2"
+                          onClick={() => handleBlockCompany(company._id)}
+                        >
                           <i className="fa-solid fa-ban"></i>
                         </Button>
-                        <Button variant="success" size="sm" onClick={() => handleVerifyCompany(company._id)} disabled={company.verified}>
+                        {/* <Button variant="success" size="sm" onClick={() => handleVerifyCompany(company._id)} disabled={company.verified}>
                           {company.verified ? "Verified" : "Verify"}
-                        </Button>
+                        </Button> */}
                       </>
                     )}
-                    {showBlocked && (
-                      <Button variant="success" size="sm" onClick={() => handleBlockCompany(company._id)}>
+                    {company.isBlocked && (
+                      <Button
+                        variant="success"
+                        size="sm"
+                        onClick={() => handleUnBlockCompany(company._id)}
+                      >
                         Unblock
                       </Button>
                     )}
@@ -141,7 +209,9 @@ const ManageCompany = () => {
               <Form.Control
                 type="text"
                 value={newCompany.name}
-                onChange={(e) => setNewCompany({ ...newCompany, name: e.target.value })}
+                onChange={(e) =>
+                  setNewCompany({ ...newCompany, name: e.target.value })
+                }
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -149,14 +219,20 @@ const ManageCompany = () => {
               <Form.Control
                 type="email"
                 value={newCompany.email}
-                onChange={(e) => setNewCompany({ ...newCompany, email: e.target.value })}
+                onChange={(e) =>
+                  setNewCompany({ ...newCompany, email: e.target.value })
+                }
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" onClick={handleAddCompany}>Add Company</Button>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          {/* <Button variant="primary" onClick={handleAddCompany}>
+            Add Company
+          </Button> */}
         </Modal.Footer>
       </Modal>
 
@@ -172,7 +248,9 @@ const ManageCompany = () => {
               <Form.Control
                 type="text"
                 value={editCompany.name}
-                onChange={(e) => setEditCompany({ ...editCompany, name: e.target.value })}
+                onChange={(e) =>
+                  setEditCompany({ ...editCompany, name: e.target.value })
+                }
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -180,14 +258,20 @@ const ManageCompany = () => {
               <Form.Control
                 type="email"
                 value={editCompany.email}
-                onChange={(e) => setEditCompany({ ...editCompany, email: e.target.value })}
+                onChange={(e) =>
+                  setEditCompany({ ...editCompany, email: e.target.value })
+                }
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleEditClose}>Close</Button>
-          <Button variant="primary" onClick={handleEditCompany}>Save Changes</Button>
+          <Button variant="secondary" onClick={handleEditClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleEditCompany}>
+            Save Changes
+          </Button>
         </Modal.Footer>
       </Modal>
     </Container>

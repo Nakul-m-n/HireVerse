@@ -1,20 +1,50 @@
-import React, { useState } from "react";
-import { Table, Button, Modal, Form, Container, Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
+import api from "../../API";
+import { toast } from "react-toastify";
 
 const ManageJobs = () => {
-  const [jobs, setJobs] = useState([{
-    id: "1",
-    title: "test",
-    company: "m",
-    blocked: false
-  }]);
+  const [jobs, setJobs] = useState([]);
+
+  async function callAPI() {
+    await api
+      .get("/admin/showAllJobs")
+      .then((res) => {
+        console.log(res.data);
+        setJobs(res.data);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  }
+  useEffect(() => {
+    callAPI();
+  }, []);
   const [searchTerm, setSearchTerm] = useState("");
   const [showBlocked, setShowBlocked] = useState(false);
 
   const [show, setShow] = useState(false);
   const [editShow, setEditShow] = useState(false);
-  const [newJob, setNewJob] = useState({ id: "", title: "", company: "", blocked: false });
-  const [editJob, setEditJob] = useState({ id: "", title: "", company: "", blocked: false });
+  const [newJob, setNewJob] = useState({
+    id: "",
+    title: "",
+    company: "",
+    blocked: false,
+  });
+  const [editJob, setEditJob] = useState({
+    id: "",
+    title: "",
+    company: "",
+    blocked: false,
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -31,7 +61,7 @@ const ManageJobs = () => {
   };
 
   const handleEditJob = () => {
-    setJobs(jobs.map(job => job.id === editJob.id ? editJob : job));
+    setJobs(jobs.map((job) => (job.id === editJob.id ? editJob : job)));
     handleEditClose();
   };
 
@@ -40,12 +70,17 @@ const ManageJobs = () => {
   };
 
   const handleBlockJob = (id) => {
-    setJobs(jobs.map(job => job.id === id ? { ...job, blocked: !job.blocked } : job));
+    setJobs(
+      jobs.map((job) =>
+        job.id === id ? { ...job, blocked: !job.blocked } : job
+      )
+    );
   };
 
-  const filteredJobs = jobs.filter(job =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (showBlocked ? job.blocked : !job.blocked)
+  const filteredJobs = jobs.filter(
+    (job) =>
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (showBlocked ? job.blocked : !job.blocked)
   );
 
   return (
@@ -62,7 +97,6 @@ const ManageJobs = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </Col>
-           
           </Row>
           <Table striped bordered hover>
             <thead>
@@ -74,25 +108,47 @@ const ManageJobs = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredJobs.map((job) => (
-                <tr >
-                  <td>{job.id}</td>
+              {filteredJobs.map((job, index) => (
+                <tr key={index}>
+                  <td>{index}</td>
                   <td>{job.title}</td>
-                  <td>{job.company}</td>
+                  <td>{job.companyId.name}</td>
                   <td>
-                    <Button variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(job)}>
+                    <Button
+                      variant="warning"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleEditShow(job)}
+                      disabled
+                    >
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Button>
-                    <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteJob(job.id)}>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      className="me-2"
+                      disabled
+                      onClick={() => handleDeleteJob(job.id)}
+                    >
                       <i className="fa-solid fa-trash"></i>
                     </Button>
                     {!showBlocked && (
-                      <Button variant="dark" size="sm" onClick={() => handleBlockJob(job.id)}>
+                      <Button
+                        variant="dark"
+                        size="sm"
+                        disabled
+                        onClick={() => handleBlockJob(job.id)}
+                      >
                         <i className="fa-solid fa-ban"></i>
                       </Button>
                     )}
                     {showBlocked && (
-                      <Button variant="success" size="sm" onClick={() => handleBlockJob(job.id)}>
+                      <Button
+                        disabled
+                        variant="success"
+                        size="sm"
+                        onClick={() => handleBlockJob(job.id)}
+                      >
                         Unblock
                       </Button>
                     )}
@@ -103,8 +159,6 @@ const ManageJobs = () => {
           </Table>
         </Col>
       </Row>
-
-   
 
       {/* Edit Job Modal */}
       <Modal show={editShow} onHide={handleEditClose}>
@@ -118,7 +172,9 @@ const ManageJobs = () => {
               <Form.Control
                 type="text"
                 value={editJob.title}
-                onChange={(e) => setEditJob({ ...editJob, title: e.target.value })}
+                onChange={(e) =>
+                  setEditJob({ ...editJob, title: e.target.value })
+                }
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -126,14 +182,20 @@ const ManageJobs = () => {
               <Form.Control
                 type="text"
                 value={editJob.company}
-                onChange={(e) => setEditJob({ ...editJob, company: e.target.value })}
+                onChange={(e) =>
+                  setEditJob({ ...editJob, company: e.target.value })
+                }
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleEditClose}>Close</Button>
-          <Button variant="primary" onClick={handleEditJob}>Save Changes</Button>
+          <Button variant="secondary" onClick={handleEditClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleEditJob}>
+            Save Changes
+          </Button>
         </Modal.Footer>
       </Modal>
     </Container>
