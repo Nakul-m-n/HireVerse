@@ -160,6 +160,14 @@ const JobVacDetails = () => {
         + Add Job
       </Button>
       <div className="container">
+        {!jobs.length && (
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{ minHeight: "100vh" }}
+          >
+            <h2>No Jobs Found</h2>
+          </div>
+        )}
         {jobs.map((job) => (
           <Card key={job._id} className="shadow mb-3">
             <Card.Body>
@@ -352,7 +360,7 @@ const JobVacDetails = () => {
             <Form.Control
               type="text"
               placeholder="Qualification (use ; for adding next Qualification)"
-              name="Qualification"
+              name="qualification"
               value={formData["qualification"]}
               onChange={handleChange}
             />

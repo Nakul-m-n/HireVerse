@@ -21,7 +21,11 @@ const Jobs = () => {
   async function fetchDataKeys() {
     try {
       const res = await api.get("/user/keys");
-      setKeys(res?.data);
+
+      var filter = res?.data?.map((key) => String(key).toLowerCase().trim());
+      filter = [...new Set(filter)];
+      console.log(filter);
+      setKeys(filter);
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
@@ -35,6 +39,27 @@ const Jobs = () => {
       setFilteredJobs(res?.data);
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
+    }
+  }
+
+  async function ApplyJob(job) {
+    var id = toast.loading("Applying for job...");
+    try {
+      await api.post(`/user/request/${job}`).then(() => {
+        toast.update(id, {
+          render: "Job Applied successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      });
+    } catch (error) {
+      toast.update(id, {
+        render: error?.response?.data?.message || error.message,
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
     }
   }
 
@@ -61,19 +86,34 @@ const Jobs = () => {
   };
 
   const applyFilters = (filterType, searchQuery) => {
-    let filteredList = jobs.filter((job) =>
-      job.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    if (filterType === "latest") {
-      filteredList = filteredList.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
+    var filteredList = jobs;
+    if (filterType === "all") {
+      filteredList = jobs;
+    } else if (filterType === "latest") {
+      filteredList = filteredList.filter((job) => !!job.latest);
     } else if (filterType === "recommended") {
-      filteredList = filteredList.sort((a, b) => b.salary - a.salary);
+      filteredList = filteredList.filter((job) => !!job.recommended);
+    } else if (keys.includes(filterType)) {
+      filteredList = filteredList.filter((job) =>
+        job.skills.some(
+          (skill) =>
+            skill.toLowerCase().trim() === filterType.toLowerCase().trim()
+        )
+      );
     }
 
-    setFilteredJobs(filteredList);
+    if (searchQuery === "" || searchQuery === null) {
+      setFilteredJobs(filteredList);
+    } else {
+      applySearch(searchQuery, filteredList);
+    }
+  };
+
+  const applySearch = (searchQuery, filteredList) => {
+    var searchResults = filteredList.filter((job) =>
+      job.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredJobs(searchResults);
   };
 
   return (
@@ -106,7 +146,9 @@ const Jobs = () => {
               className="me-2"
               value={filter}
               onChange={handleFilterChange}
+              defaultValue={"all"}
             >
+              <option value="all">All</option>
               <option value="latest">Latest</option>
               <option value="recommended">Recommended</option>
               {keys.map((key, idx) => (
@@ -123,6 +165,14 @@ const Jobs = () => {
 
         <div style={{ minHeight: "100vh" }}>
           <div className="container">
+            {!filteredJobs.length && (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ minHeight: "100vh" }}
+              >
+                <h2>No Jobs Found</h2>
+              </div>
+            )}
             {filteredJobs.map((job) => (
               <Card key={job._id} className="shadow mb-3">
                 <Card.Body>
@@ -136,6 +186,7 @@ const Jobs = () => {
                     <div className="ms-3">
                       <Card.Title>{job.title}</Card.Title>
                       <br />
+
                       <div className="d-flex justify-content-around align-items-center">
                         <p className="d-flex align-items-center">
                           <i className="fa-regular fa-clock mr-2"></i>{" "}
@@ -144,6 +195,11 @@ const Jobs = () => {
                         <p className="d-flex align-items-center">
                           <i className="fa-solid fa-house-laptop mr-2"></i>{" "}
                           {job.jobType}
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <i className="fa-solid fa-building mr-2"></i>
+                          {"  "}
+                          {" " + job.companyId.name || "Company Name"}
                         </p>
                       </div>
                       <div className="d-flex flex-wrap">
@@ -217,11 +273,11 @@ const Jobs = () => {
             <Modal.Title>{selectedJob.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h2>{selectedJob.company || "Company Name"}</h2>
+            <h2>{selectedJob.companyId.name || "Company Name"}</h2>
             <ul>
               <li>Job Mode: {selectedJob.jobType}</li>
               <li>Location: {selectedJob.location}</li>
-              <li>Experience: {selectedJob.experience} years</li>
+              {/* <li>Experience: {selectedJob.experience} years</li> */}
             </ul>
             <p>{selectedJob.description}</p>
             <h4>Qualifications</h4>
@@ -241,7 +297,9 @@ const Jobs = () => {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary">Apply</Button>
+            <Button variant="primary" onClick={() => ApplyJob(selectedJob._id)}>
+              Apply
+            </Button>
           </Modal.Footer>
         </Modal>
       )}
