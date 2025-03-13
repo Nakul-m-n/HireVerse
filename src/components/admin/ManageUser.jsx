@@ -92,7 +92,7 @@ const ManageUser = () => {
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (showBlocked ? user.isBlocked : !user.blocked) // Show blocked users if toggled
+      (showBlocked ? user.isBlocked : !user.isBlocked) // Show blocked users if toggled
   );
 
   return (
@@ -137,12 +137,12 @@ const ManageUser = () => {
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>
-                    {/* <Button variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(user)}>
+                    <Button disabled variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(user)}>
                       <i className="fa-solid fa-pen-to-square"></i>
-                    </Button> */}
-                    {/* <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteUser(user._id)}>
+                    </Button>
+                    <Button disabled variant="danger" size="sm" className="me-2" onClick={() => handleDeleteUser(user._id)}>
                       <i className="fa-solid fa-trash"></i>
-                    </Button> */}
+                    </Button>
                     {!user.isBlocked && ( // Show block button only in normal user view
                       <Button
                         variant="dark"

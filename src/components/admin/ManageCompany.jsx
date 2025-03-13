@@ -159,12 +159,12 @@ const ManageCompany = () => {
                   <td>{company.name}</td>
                   <td>{company.email}</td>
                   <td>
-                    {/* <Button variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(company)}>
+                    <Button disabled variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(company)}>
                       <i className="fa-solid fa-pen-to-square"></i>
-                    </Button> */}
-                    {/* <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteCompany(company._id)}>
+                    </Button>
+                    <Button disabled variant="danger" size="sm" className="me-2" onClick={() => handleDeleteCompany(company._id)}>
                       <i className="fa-solid fa-trash"></i>
-                    </Button> */}
+                    </Button>
                     {!company.isBlocked && (
                       <>
                         <Button
