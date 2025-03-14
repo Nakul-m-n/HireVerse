@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, FloatingLabel, Form, Modal } from "react-bootstrap";
-import tcs from "../../assets/images/tcs.png";
+
 import API from "../../API";
 import { toast } from "react-toastify";
+import api from "../../API";
 
 const JobVacDetails = () => {
   const [show, setShow] = useState(false);
@@ -19,6 +20,27 @@ const JobVacDetails = () => {
     skills: "",
     qualification: "",
   });
+
+  const [image, setImage] = React.useState(null);
+  async function getUrl() {
+    await api
+      .get("/media/profile")
+      .then((response) => {
+        console.log("Image uploaded successfully:", response.data);
+        setImage(response.data.url);
+        
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        toast.error(
+          error?.response?.data?.message || error?.message || "Unknown error"
+        );
+      });
+  }
+
+  useEffect(() => {
+    getUrl();
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -174,7 +196,7 @@ const JobVacDetails = () => {
                 {/* Image Section */}
                 <div className="col-12 col-md-4 text-center">
                   <img
-                    src={tcs}
+                    src={image}
                     alt="Company Logo"
                     className="img-fluid"
                     style={{ maxWidth: "250px", borderRadius: "10px" }}

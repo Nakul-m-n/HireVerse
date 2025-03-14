@@ -11,6 +11,26 @@ const Recent = () => {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("latest");
+  const [image, setImage] = React.useState(null);
+  async function getUrl() {
+    await api
+      .get("/media/profile")
+      .then((response) => {
+        console.log("Image uploaded successfully:", response.data);
+        setImage(response.data.url);
+        
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        toast.error(
+          error?.response?.data?.message || error?.message || "Unknown error"
+        );
+      });
+  }
+
+  useEffect(() => {
+    getUrl();
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -137,7 +157,7 @@ const Recent = () => {
                 <div className="row align-items-center">
                   {/* Company Logo */}
                   <div className="col-12 col-md-4 text-center">
-                    <img src={tcs} alt="Company Logo" className="img-fluid" />
+                    <img src={image} alt="Company Logo" className="img-fluid" />
                   </div>
             
                   {/* Job Details */}

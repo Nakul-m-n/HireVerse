@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import landingimg from "../assets/images/landingimg.png";
 import tcs from "../assets/images/tcs.png"
 import infosys from "../assets/images/infosys.png"
@@ -8,8 +8,31 @@ import wipro from "../assets/images/wipro.png"
 
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../API";
 
 const Home = () => {
+
+  const [image, setImage] = React.useState(null);
+  async function getUrl() {
+    await api
+      .get("/media/profile")
+      .then((response) => {
+        console.log("Image uploaded successfully:", response.data);
+        setImage(response.data.url);
+        
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        toast.error(
+          error?.response?.data?.message || error?.message || "Unknown error"
+        );
+      });
+  }
+
+  useEffect(() => {
+    getUrl();
+  }, []);
   return (
     <>
       <div
@@ -52,7 +75,7 @@ const Home = () => {
             <hr />
             <div className="d-flex justify-content-around align-items-center flex-wrap ">
               <Card className="my-3 " style={{ width: "13rem" }}>
-                <Card.Img variant="top" src="https://www.w3schools.com/howto/img_avatar.png" />
+                <Card.Img variant="top" src={image} />
                 <Card.Body>
                   <Card.Title>Jhon  carter</Card.Title>
                   <Card.Text>
@@ -62,7 +85,7 @@ const Home = () => {
               </Card>
 
               <Card className="my-3 " style={{ width: "13rem" }}>
-                <Card.Img variant="top" src="https://www.w3schools.com/howto/img_avatar.png" />
+                <Card.Img variant="top" src={image} />
                 <Card.Body>
                   <Card.Title>Jhon  carter</Card.Title>
                   <Card.Text>
@@ -72,7 +95,7 @@ const Home = () => {
               </Card>
 
               <Card className="my-3 " style={{ width: "13rem" }}>
-                <Card.Img variant="top" src="https://www.w3schools.com/howto/img_avatar.png" />
+                <Card.Img variant="top" src={image} />
                 <Card.Body>
                   <Card.Title>Jhon  carter</Card.Title>
                   <Card.Text>
@@ -82,7 +105,7 @@ const Home = () => {
               </Card>
 
               <Card className="my-3 " style={{ width: "13rem" }}>
-                <Card.Img variant="top" src="https://www.w3schools.com/howto/img_avatar.png" />
+                <Card.Img variant="top" src={image} />
                 <Card.Body>
                   <Card.Title>Jhon  carter</Card.Title>
                   <Card.Text>
@@ -103,7 +126,7 @@ const Home = () => {
 
         <marquee >
           <div className="d-flex justify-content-around  align-items-center">
-                  <img width={"10%"} src={tcs} alt="" />
+                  <img width={"10%"} src={image} alt="" />
                   <img width={"10%"} src={infosys} alt="" />
                   <img width={"10%"} src={cog} alt="" />
                   <img width={"10%"} src={wipro} alt="" />

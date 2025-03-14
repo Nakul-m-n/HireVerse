@@ -9,6 +9,27 @@ const JobRequest = () => {
   const [filter, setFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
+    const [image, setImage] = React.useState(null);
+  async function getUrl() {
+    await api
+      .get("/media/profile")
+      .then((response) => {
+        console.log("Image uploaded successfully:", response.data);
+        setImage(response.data.url);
+        
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        toast.error(
+          error?.response?.data?.message || error?.message || "Unknown error"
+        );
+      });
+  }
+
+  useEffect(() => {
+    getUrl();
+  }, []);
+
 
   const toggleBookmark = async (user_) => {
     var jobId = filter;
@@ -139,7 +160,7 @@ const JobRequest = () => {
                     <Card.Img
                       className="my-2 img-fluid mx-auto"
                       variant="top"
-                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      src={image}
                       style={{ maxWidth: "150px", borderRadius: "50%" }}
                     />
                     <Card.Body className="text-center">
