@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import landingimg from "../assets/images/landingimg.png";
-import tcs from "../assets/images/tcs.png"
-import infosys from "../assets/images/infosys.png"
-import cog from "../assets/images/cog.png"
-import wipro from "../assets/images/wipro.png"
-
+import tcs from "../assets/images/tcs.png";
+import infosys from "../assets/images/infosys.png";
+import cog from "../assets/images/cog.png";
+import wipro from "../assets/images/wipro.png";
 
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -12,15 +11,13 @@ import { toast } from "react-toastify";
 import api from "../API";
 
 const Home = () => {
-
   const [image, setImage] = React.useState(null);
-  async function getUrl() {
+  async function getUrl(id) {
     await api
-      .get("/media/profile")
+      .get("/media/profile" + (id ? `/${id}` : ""))
       .then((response) => {
         console.log("Image uploaded successfully:", response.data);
         setImage(response.data.url);
-        
       })
       .catch((error) => {
         console.error("Error uploading image:", error);
@@ -61,7 +58,9 @@ const Home = () => {
                 hiring, HireVerse simplifies the process for a smarter, faster,
                 and better career experience.
               </p>
-              <Link to={'/login'} className="btn btn-primary mt-3">Explore more</Link>
+              <Link to={"/login"} className="btn btn-primary mt-3">
+                Explore more
+              </Link>
             </div>
             <div className="col-lg-6">
               <img className="img-fluid " src={landingimg} alt="" />
@@ -77,9 +76,9 @@ const Home = () => {
               <Card className="my-3 " style={{ width: "13rem" }}>
                 <Card.Img variant="top" src={image} />
                 <Card.Body>
-                  <Card.Title>Jhon  carter</Card.Title>
+                  <Card.Title>Jhon carter</Card.Title>
                   <Card.Text>
-                    Placed  at abc company as React Developer  with 3.2 LPA
+                    Placed at abc company as React Developer with 3.2 LPA
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -87,9 +86,9 @@ const Home = () => {
               <Card className="my-3 " style={{ width: "13rem" }}>
                 <Card.Img variant="top" src={image} />
                 <Card.Body>
-                  <Card.Title>Jhon  carter</Card.Title>
+                  <Card.Title>Jhon carter</Card.Title>
                   <Card.Text>
-                    Placed  at abc company as React Developer  with 3.2 LPA
+                    Placed at abc company as React Developer with 3.2 LPA
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -97,9 +96,9 @@ const Home = () => {
               <Card className="my-3 " style={{ width: "13rem" }}>
                 <Card.Img variant="top" src={image} />
                 <Card.Body>
-                  <Card.Title>Jhon  carter</Card.Title>
+                  <Card.Title>Jhon carter</Card.Title>
                   <Card.Text>
-                    Placed  at abc company as React Developer  with 3.2 LPA
+                    Placed at abc company as React Developer with 3.2 LPA
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -107,29 +106,22 @@ const Home = () => {
               <Card className="my-3 " style={{ width: "13rem" }}>
                 <Card.Img variant="top" src={image} />
                 <Card.Body>
-                  <Card.Title>Jhon  carter</Card.Title>
+                  <Card.Title>Jhon carter</Card.Title>
                   <Card.Text>
-                    Placed  at abc company as React Developer  with 3.2 LPA
+                    Placed at abc company as React Developer with 3.2 LPA
                   </Card.Text>
                 </Card.Body>
               </Card>
-
-             
-
-             
-
-
-              
             </div>
           </div>
         </div>
 
-        <marquee >
+        <marquee>
           <div className="d-flex justify-content-around  align-items-center">
-                  <img width={"10%"} src={image} alt="" />
-                  <img width={"10%"} src={infosys} alt="" />
-                  <img width={"10%"} src={cog} alt="" />
-                  <img width={"10%"} src={wipro} alt="" />
+            <img width={"10%"} src={image} alt="" />
+            <img width={"10%"} src={infosys} alt="" />
+            <img width={"10%"} src={cog} alt="" />
+            <img width={"10%"} src={wipro} alt="" />
           </div>
         </marquee>
       </div>

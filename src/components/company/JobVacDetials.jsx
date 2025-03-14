@@ -22,9 +22,9 @@ const JobVacDetails = () => {
   });
 
   const [image, setImage] = React.useState(null);
-  async function getUrl() {
+  async function getUrl(id) {
     await api
-      .get("/media/profile")
+      .get("/media/profile" + (id ? `/${id}` : ""))
       .then((response) => {
         console.log("Image uploaded successfully:", response.data);
         setImage(response.data.url);
