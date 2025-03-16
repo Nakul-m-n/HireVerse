@@ -16,7 +16,6 @@ const Home = () => {
     await api
       .get("/media/profile" + (id ? `/${id}` : ""))
       .then((response) => {
-        console.log("Image uploaded successfully:", response.data);
         setImage(response.data.url);
       })
       .catch((error) => {

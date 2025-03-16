@@ -26,7 +26,6 @@ const JobVacDetails = () => {
     await api
       .get("/media/profile" + (id ? `/${id}` : ""))
       .then((response) => {
-        console.log("Image uploaded successfully:", response.data);
         setImage(response.data.url);
         
       })
@@ -143,8 +142,7 @@ const JobVacDetails = () => {
       );
       if (confirmDelete) {
         await API.delete(`/company/job/${job}`)
-          .then((res) => {
-            console.log(res.data);
+          .then(() => {
             toast.update(id, {
               render: "Job deleted successfully",
               type: "success",

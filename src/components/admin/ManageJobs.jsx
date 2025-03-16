@@ -18,7 +18,6 @@ const ManageJobs = () => {
     await api
       .get("/admin/showAllJobs")
       .then((res) => {
-        console.log(res.data);
         setJobs(res.data);
       })
       .catch((err) => {

@@ -14,32 +14,43 @@ const JobVacancy = () => {
     try {
       const res = await api.get("/company/job_count");
       setJobs(res?.data);
+      console.log(res?.data);
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
   }
   return (
     <div style={{ padding: "100px", minHeight: "100vh" }} className="container">
-      <h3>Job vacancy List&apos;s.</h3>
-      <div className=" rounded container  d-flex justify-content-around align-items-center p-5 flex-wrap">
+      <h3 className="text-center mb-4">Job Vacancy List</h3>
+      <div className="row g-4">
         {jobs.map((job, index) => (
-          <Card
-            key={index}
-            style={{
-              width: "18rem",
-              height: "10rem",
-              backgroundColor: " rgb(207, 237, 227)",
-            }}
-            className="my-3 shadow "
-          >
-            <Card.Body>
-              <Card.Title>{job?.jobTitle}</Card.Title>
-
-              <h6>
-                Number of Applicants: <span>{job?.count || 0}</span>{" "}
-              </h6>
-            </Card.Body>
-          </Card>
+          <div key={index} className="col-md-4 d-flex">
+            <Card
+              style={{
+                backgroundColor: "#f8f9fa",
+                border: "1px solid #dee2e6",
+                borderRadius: "10px",
+                width: "100%",
+                height: "100%",
+              }}
+              className="shadow-sm flex-fill"
+            >
+              <Card.Body>
+                <Card.Title className="text-primary">{job?.jobTitle}</Card.Title>
+                <div className="mt-3">
+                  <p className="mb-1">
+                    <strong>Total Applicants:</strong> {job?.count || 0}
+                  </p>
+                  <p className="mb-1">
+                    <strong>Selected:</strong> {job?.selected || 0}
+                  </p>
+                  <p className="mb-1">
+                    <strong>Unselected:</strong> {job?.unselected || 0}
+                  </p>
+                </div>
+              </Card.Body>
+            </Card>
+          </div>
         ))}
       </div>
     </div>

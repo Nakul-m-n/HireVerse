@@ -1,4 +1,4 @@
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button, Card, Form, Image } from "react-bootstrap";
 import api from "../../API";
 import { toast } from "react-toastify";
@@ -6,17 +6,50 @@ import { toast } from "react-toastify";
 const CompProfile = () => {
   const [imagePreview, setImagePreview] = React.useState(null);
   const [image, setImage] = React.useState(null);
+  const [onEdit, setOnEdit] = React.useState(false);
+  const [uerPre, setUserPre] = React.useState({
+    name: "",
+    email: "",
+    experience: "",
+    number: "",
+    location: "",
+  });
+  const [user, setUser] = React.useState({
+    name: "",
+    email: "",
+    experience: "",
+    number: "",
+    location: "",
+  });
 
-  async function getUrl(id) {
+  const onSave = async () => {
     await api
-    .get("/media/profile" + (id ? `/${id}` : ""))
-      .then((response) => {
-        console.log("Image uploaded successfully:", response.data);
-        setImage(response.data.url);
-        setImagePreview(response.data.url);
+      .put("/auth/profile", user)
+      .then(() => {
+        toast.success("User updated successfully");
+        me();
       })
       .catch((error) => {
-        console.error("Error uploading image:", error);
+        console.error("Error updating user:", error);
+        toast.error(
+          error?.response?.data?.message || error?.message || "Unknown error"
+        );
+      })
+      .finally(() => {
+        setOnEdit(false);
+      });
+  };
+
+  async function me() {
+    await api
+      .get("/auth/me")
+      .then((response) => {
+        setImage(response.data.image);
+        setUser(response.data);
+        setUserPre(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
         toast.error(
           error?.response?.data?.message || error?.message || "Unknown error"
         );
@@ -24,8 +57,13 @@ const CompProfile = () => {
   }
 
   useEffect(() => {
-    getUrl();
+    me();
   }, []);
+
+  const HandleChange = (e) => {
+    e.preventDefault();
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -42,10 +80,9 @@ const CompProfile = () => {
 
     await api
       .post("/media/profile", formData)
-      .then((response) => {
-        console.log("Image uploaded successfully:", response.data);
+      .then(() => {
         toast.success("Image uploaded successfully");
-        getUrl();
+        me();
       })
       .catch((error) => {
         console.error("Error uploading image:", error);
@@ -64,23 +101,27 @@ const CompProfile = () => {
             <div className="col-lg-6 d-flex-column align-items-center justify-content-center p-5">
               <div className="mt-3 d-flex-column align-items-center justify-content-center text-center">
                 <Image
-                  src={image}
+                  src={imagePreview || image}
                   roundedCircle
                   width={100}
                   height={100}
                   className="d-block mx-auto mb-3"
                 />
 
-                <h5>ABC COMPANY PVT</h5>
+                <h5>{uerPre.name}</h5>
                 <p>
-                  {" "}
-                  discripton Lorem ipsum dolor sit, amet consectetur adipisicing
-                  elit. Nihil sequi cum eligendi fugit minima perspiciatis
-                  nesciunt, perferendis placeat.
+                  <strong>About:</strong> {uerPre.about}
                 </p>
-                <p>COMPANY@gmail.com</p>
-                <p>9377212331</p>
-                <p>Banglore</p>
+                <br />
+                <p>
+                  <strong>Email:</strong> {uerPre.email}
+                </p>
+                <p>
+                  <strong>Phone Number:</strong> {uerPre.number}
+                </p>
+                <p>
+                  <strong>Location:</strong> {uerPre.location}
+                </p>
               </div>
             </div>
 
@@ -95,10 +136,7 @@ const CompProfile = () => {
                     onChange={handleImageUpload}
                   />
                   <Image
-                    src={
-                      imagePreview ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6COSFWe7YIhEEOYHOSwVWAw5soUk2VuMptKGuqSOuFM5d6RTb4f7FRAg&s"
-                    }
+                    src={imagePreview || image}
                     roundedCircle
                     width={100}
                     height={100}
@@ -114,6 +152,10 @@ const CompProfile = () => {
                     id="floatingName"
                     type="text"
                     placeholder="Name"
+                    disabled={!onEdit}
+                    name="name"
+                    value={user.name}
+                    onChange={HandleChange}
                   />
                   <label htmlFor="floatingName">Name</label>
                 </Form.Floating>
@@ -121,51 +163,68 @@ const CompProfile = () => {
                 <Form.Floating className="mb-3">
                   <Form.Control
                     id="floatingAbout"
-                    type="email"
-                    placeholder="name@example.com"
+                    type="text"
+                    placeholder="about"
+                    disabled={!onEdit}
+                    name="about"
+                    value={user.about}
+                    onChange={HandleChange}
                   />
-                  <label htmlFor="floatingEmail">About </label>
-                </Form.Floating>
-
-                <Form.Floating className="mb-3">
-                  <Form.Control
-                    id="floatingEmail"
-                    type="email"
-                    placeholder="name@example.com"
-                  />
-                  <label htmlFor="floatingEmail">Email Address</label>
+                  <label htmlFor="floatingAbout">About </label>
                 </Form.Floating>
 
                 <Form.Floating className="mb-3">
                   <Form.Control
                     id="floatingPhn"
-                    type="email"
-                    placeholder="name@example.com"
+                    type="number"
+                    placeholder="911234567890"
+                    disabled={!onEdit}
+                    name="number"
+                    value={user.number}
+                    onChange={HandleChange}
                   />
-                  <label htmlFor="floatingEmail">Phone Number</label>
+                  <label htmlFor="floatingPhn">Phone Number</label>
                 </Form.Floating>
 
                 <Form.Floating className="mb-3">
                   <Form.Control
                     id="floatingLoc"
-                    type="email"
-                    placeholder="name@example.com"
+                    type="text"
+                    disabled={!onEdit}
+                    name="location"
+                    value={user.location}
+                    onChange={HandleChange}
+                    placeholder="kerala"
                   />
-                  <label htmlFor="floatingEmail">Location </label>
+                  <label htmlFor="floatingLoc">Location </label>
                 </Form.Floating>
 
-                <Form.Floating>
-                  <Form.Control
-                    id="floatingPassword"
-                    type="password"
-                    placeholder="Password"
-                  />
-                  <label htmlFor="floatingPassword">Password</label>
-                </Form.Floating>
-
-                <Button variant="success" className="w-100 mt-3">
-                  Save
-                </Button>
+                {onEdit ? (
+                  <>
+                    <Button
+                      variant="warning"
+                      className="w-100 mt-3"
+                      onClick={() => setOnEdit(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="success"
+                      className="w-100 mt-3"
+                      onClick={onSave}
+                    >
+                      Save
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="primary"
+                    className="w-100 mt-3"
+                    onClick={() => setOnEdit(true)}
+                  >
+                    Edit
+                  </Button>
+                )}
               </div>
             </div>
           </div>

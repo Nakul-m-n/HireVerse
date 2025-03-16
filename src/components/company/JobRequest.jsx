@@ -14,7 +14,6 @@ const JobRequest = () => {
     return await api
       .get("/media/profile" + (id ? `/${id}` : ""))
       .then((response) => {
-        console.log("Image uploaded successfully:", response.data);
         setImage({ ...image, [id]: response.data.url });
         return response.data.url;
       })
@@ -78,7 +77,6 @@ const JobRequest = () => {
   async function fetchData_(id) {
     try {
       const res = await api.get("/company/job_users/" + id);
-      console.log(res?.data);
       var data = res?.data?.filter((user) => !user._doc.isSelected);
       setUsers(data);
     } catch (error) {

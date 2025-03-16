@@ -6,17 +6,41 @@ import api from "../API";
 const UserInfo = () => {
   const [imagePreview, setImagePreview] = React.useState(null);
   const [image, setImage] = React.useState(null);
+  const [onEdit, setOnEdit] = React.useState(false);
+  const [user, setUser] = React.useState({
+    name: "",
+    email: "",
+    experience: "",
+  });
 
-  async function getUrl(id) {
+  const onSave = async () => {
     await api
-    .get("/media/profile" + (id ? `/${id}` : ""))
+      .put("/auth/profile", user)
       .then((response) => {
-        console.log("Image uploaded successfully:", response.data);
-        setImage(response.data.url);
-        setImagePreview(response.data.url);
+        console.log("User updated successfully:", response.data);
+        toast.success("User updated successfully");
+        me();
       })
       .catch((error) => {
-        console.error("Error uploading image:", error);
+        console.error("Error updating user:", error);
+        toast.error(
+          error?.response?.data?.message || error?.message || "Unknown error"
+        );
+      })
+      .finally(() => {
+        setOnEdit(false);
+      });
+  };
+
+  async function me() {
+    await api
+      .get("/auth/me")
+      .then((response) => {
+        setImage(response.data.image);
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
         toast.error(
           error?.response?.data?.message || error?.message || "Unknown error"
         );
@@ -24,8 +48,13 @@ const UserInfo = () => {
   }
 
   useEffect(() => {
-    getUrl();
+    me();
   }, []);
+
+  const HandleChange = (e) => {
+    e.preventDefault();
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -45,7 +74,7 @@ const UserInfo = () => {
       .then((response) => {
         console.log("Image uploaded successfully:", response.data);
         toast.success("Image uploaded successfully");
-        getUrl();
+        me();
       })
       .catch((error) => {
         console.error("Error uploading image:", error);
@@ -61,10 +90,7 @@ const UserInfo = () => {
         <div className="col-lg-6 d-flex-column align-items-center justify-content-center p-5">
           <div className="mt-3 d-flex-column align-items-center justify-content-center text-center">
             <Image
-              src={
-                image ||
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6COSFWe7YIhEEOYHOSwVWAw5soUk2VuMptKGuqSOuFM5d6RTb4f7FRAg&s"
-              }
+              src={imagePreview || image}
               roundedCircle
               width={100}
               height={100}
@@ -88,10 +114,7 @@ const UserInfo = () => {
                 onChange={handleImageUpload}
               />
               <Image
-                src={
-                  imagePreview ||
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6COSFWe7YIhEEOYHOSwVWAw5soUk2VuMptKGuqSOuFM5d6RTb4f7FRAg&s"
-                }
+                src={imagePreview || image}
                 roundedCircle
                 width={100}
                 height={100}
@@ -103,7 +126,15 @@ const UserInfo = () => {
           {/* User Form */}
           <div className="w-100">
             <Form.Floating className="mb-3">
-              <Form.Control id="floatingName" type="text" placeholder="Name" />
+              <Form.Control
+                id="floatingName"
+                type="text"
+                placeholder="Name"
+                disabled={!onEdit}
+                name="name"
+                value={user.name}
+                onChange={HandleChange}
+              />
               <label htmlFor="floatingName">Name</label>
             </Form.Floating>
 
@@ -112,6 +143,9 @@ const UserInfo = () => {
                 id="floatingEmail"
                 type="email"
                 placeholder="name@example.com"
+                disabled={true}
+                name="email"
+                value={user.email}
               />
               <label htmlFor="floatingEmail">Email Address</label>
             </Form.Floating>
@@ -121,13 +155,38 @@ const UserInfo = () => {
                 id="floatingExp"
                 type="text"
                 placeholder="Experience"
+                disabled={!onEdit}
+                name="experience"
+                value={user.experience}
               />
               <label htmlFor="floatingExp"> Experience</label>
             </Form.Floating>
-
-            <Button variant="success" className="w-100 mt-3">
-              Save
-            </Button>
+            {onEdit ? (
+              <>
+                <Button
+                  variant="warning"
+                  className="w-100 mt-3"
+                  onClick={() => setOnEdit(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="success"
+                  className="w-100 mt-3"
+                  onClick={onSave}
+                >
+                  Save
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="primary"
+                className="w-100 mt-3"
+                onClick={() => setOnEdit(true)}
+              >
+                Edit
+              </Button>
+            )}
           </div>
         </div>
       </div>

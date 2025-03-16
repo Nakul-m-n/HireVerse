@@ -40,13 +40,13 @@ const Auth = ({ insideRegister }) => {
       };
       await API.post("/auth/verify-otp", data)
         .then((response) => {
-          console.log(response);
           toast.update(id, {
             render: "Verification successful",
             type: "success",
             isLoading: false,
             autoClose: 5000,
           });
+          window.localStorage.setItem("id", response.data.id);
           window.localStorage.setItem("token", response.data.token);
           window.localStorage.setItem("name", response.data.name);
           window.localStorage.setItem("email", response.data.email);
@@ -92,8 +92,7 @@ const Auth = ({ insideRegister }) => {
         type: document.querySelector("select").value,
       };
       await API.post("/auth/register", data)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           toast.update(id, {
             render: "Registration successful",
             type: "success",
@@ -141,6 +140,7 @@ const Auth = ({ insideRegister }) => {
             autoClose: 5000,
           });
 
+          window.localStorage.setItem("id", response.data.id);
           window.localStorage.setItem("token", response.data.token);
           window.localStorage.setItem("name", response.data.name);
           window.localStorage.setItem("email", response.data.email);

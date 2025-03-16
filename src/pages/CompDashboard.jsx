@@ -8,7 +8,7 @@ import SortedJobReq from "../components/company/SortedJobReq";
 import { useNavigate } from "react-router-dom";
 
 const CompDashboard = () => {
-  var [tab, setTab] = useState(0);
+  var [tab, setTab] = useState(1);
   const navigate = useNavigate();
   useEffect(() => {
     document.title = "Company Dashboard";
