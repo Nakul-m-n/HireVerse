@@ -97,9 +97,9 @@ const UserInfo = () => {
               className="d-block mx-auto mb-3"
             />
 
-            <h5>Name</h5>
-            <p>name@gmail.com</p>
-            <p>Experience</p>
+            <h5>Name : {user.name}</h5>
+            <p>Email : {user.email}</p>
+            <p>Experience : {user.experience}</p>
           </div>
         </div>
 

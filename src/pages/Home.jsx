@@ -11,24 +11,14 @@ import { toast } from "react-toastify";
 import api from "../API";
 
 const Home = () => {
-  const [image, setImage] = React.useState(null);
-  async function getUrl(id) {
-    await api
-      .get("/media/profile" + (id ? `/${id}` : ""))
-      .then((response) => {
-        setImage(response.data.url);
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        toast.error(
-          error?.response?.data?.message || error?.message || "Unknown error"
-        );
-      });
-  }
+ 
+  const companies = [
+    { name: "TCS", logo: tcs },
+    { name: "Infosys", logo: infosys },
+    { name: "Cognizant", logo: cog },
+    { name: "Wipro", logo: wipro },
+  ];
 
-  useEffect(() => {
-    getUrl();
-  }, []);
   return (
     <>
       <div
@@ -69,58 +59,31 @@ const Home = () => {
 
         <div className="container my-5 w-100">
           <div className="border rounded ">
-            <h1>Reacently placed</h1>
+            <h1>Recently Join Company</h1>
             <hr />
             <div className="d-flex justify-content-around align-items-center flex-wrap ">
-              <Card className="my-3 " style={{ width: "13rem" }}>
-                <Card.Img variant="top" src={image} />
-                <Card.Body>
-                  <Card.Title>Jhon carter</Card.Title>
-                  <Card.Text>
-                    Placed at abc company as React Developer with 3.2 LPA
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-
-              <Card className="my-3 " style={{ width: "13rem" }}>
-                <Card.Img variant="top" src={image} />
-                <Card.Body>
-                  <Card.Title>Jhon carter</Card.Title>
-                  <Card.Text>
-                    Placed at abc company as React Developer with 3.2 LPA
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-
-              <Card className="my-3 " style={{ width: "13rem" }}>
-                <Card.Img variant="top" src={image} />
-                <Card.Body>
-                  <Card.Title>Jhon carter</Card.Title>
-                  <Card.Text>
-                    Placed at abc company as React Developer with 3.2 LPA
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-
-              <Card className="my-3 " style={{ width: "13rem" }}>
-                <Card.Img variant="top" src={image} />
-                <Card.Body>
-                  <Card.Title>Jhon carter</Card.Title>
-                  <Card.Text>
-                    Placed at abc company as React Developer with 3.2 LPA
-                  </Card.Text>
-                </Card.Body>
-              </Card>
+              {companies.slice(0, 3).map((company, index) => (
+                <Card key={index} className="my-3 " style={{ width: "13rem" }}>
+                  <Card.Img variant="top" src={company.logo} />
+                  <Card.Body>
+                    <Card.Title>{company.name}</Card.Title>
+                  </Card.Body>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
 
         <marquee>
           <div className="d-flex justify-content-around  align-items-center">
-            <img width={"10%"} src={image} alt="" />
-            <img width={"10%"} src={infosys} alt="" />
-            <img width={"10%"} src={cog} alt="" />
-            <img width={"10%"} src={wipro} alt="" />
+            {companies.map((company, index) => (
+              <img
+                key={index}
+                width={"10%"}
+                src={company.logo}
+                alt={company.name}
+              />
+            ))}
           </div>
         </marquee>
       </div>

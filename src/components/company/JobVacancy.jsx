@@ -13,8 +13,8 @@ const JobVacancy = () => {
   async function fetchData() {
     try {
       const res = await api.get("/company/job_count");
-      setJobs(res?.data);
-      console.log(res?.data);
+      setJobs(res?.data?.reverse());
+      console.log(res?.data?.reverse());
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }

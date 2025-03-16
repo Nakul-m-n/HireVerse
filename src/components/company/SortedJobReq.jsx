@@ -9,25 +9,8 @@ const SortedJobReq = () => {
   const [filter, setFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [image, setImage] = React.useState(null);
-  async function getUrl(id) {
-    await api
-    .get("/media/profile" + (id ? `/${id}` : ""))
-      .then((response) => {
-        setImage(response.data.url);
-        
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        toast.error(
-          error?.response?.data?.message || error?.message || "Unknown error"
-        );
-      });
-  }
+  
 
-  useEffect(() => {
-    getUrl();
-  }, []);
 
   const toggleBookmark = async (user_) => {
     var jobId = filter;
@@ -67,7 +50,7 @@ const SortedJobReq = () => {
     try {
       const res = await api.get("/company/job");
       var keys = res?.data?.map((job) => ({ title: job.title, id: job._id }));
-      setKeys(keys);
+      setKeys(keys?.reverse());
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
@@ -77,7 +60,7 @@ const SortedJobReq = () => {
     try {
       const res = await api.get("/company/job_users/" + id);
       var data = res?.data?.filter((user) => user._doc.isSelected);
-      setUsers(data);
+      setUsers(data?.reverse());
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
@@ -147,7 +130,7 @@ const SortedJobReq = () => {
                     <Card.Img
                       className="mt-2 img-fluid mx-auto"
                       variant="top"
-                      src={image}
+                      src={user._user.image}
                       style={{ maxWidth: "150px", borderRadius: "50%" }}
                     />
                     <Card.Body className="text-center">

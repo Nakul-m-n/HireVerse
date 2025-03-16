@@ -9,25 +9,6 @@ const JobRequest = () => {
   const [filter, setFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [image, setImage] = React.useState({});
-  async function getUrl(id) {
-    return await api
-      .get("/media/profile" + (id ? `/${id}` : ""))
-      .then((response) => {
-        setImage({ ...image, [id]: response.data.url });
-        return response.data.url;
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        toast.error(
-          error?.response?.data?.message || error?.message || "Unknown error"
-        );
-      });
-  }
-
-  useEffect(() => {
-    getUrl();
-  }, []);
 
   const toggleBookmark = async (user_) => {
     var jobId = filter;
@@ -66,9 +47,8 @@ const JobRequest = () => {
   async function fetchData() {
     try {
       const res = await api.get("/company/job");
-
       var keys = res?.data?.map((job) => ({ title: job.title, id: job._id }));
-      setKeys(keys);
+      setKeys(keys?.reverse());
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
@@ -78,7 +58,8 @@ const JobRequest = () => {
     try {
       const res = await api.get("/company/job_users/" + id);
       var data = res?.data?.filter((user) => !user._doc.isSelected);
-      setUsers(data);
+      console.log(data[0]);
+      setUsers(data?.reverse());
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
@@ -101,6 +82,7 @@ const JobRequest = () => {
   const handleSeeMore = async (userId) => {
     try {
       const res = await api.get(`/company/user_details/${userId}`);
+      console.log(res.data);
       setSelectedUser(res.data);
       setShowModal(true);
     } catch (error) {
@@ -157,7 +139,7 @@ const JobRequest = () => {
                     <Card.Img
                       className="my-2 img-fluid mx-auto"
                       variant="top"
-                      src={image[user._user._id]}
+                      src={user._user.image}
                       style={{ maxWidth: "150px", borderRadius: "50%" }}
                     />
                     <Card.Body className="text-center">
@@ -171,6 +153,13 @@ const JobRequest = () => {
                           </small>
                         )}
                         <br />
+                        <small>
+                          <b>Status:</b> {user._user.status}
+                        </small>
+                        <br />
+                        <small>
+                          <b>Last Login:</b> {DateConvert(user._user.lastLogin)}
+                        </small>
                       </Card.Text>
                       <div className="d-flex justify-content-between">
                         <Button
@@ -208,18 +197,20 @@ const JobRequest = () => {
         <Modal.Body>
           {selectedUser ? (
             <>
-              <p>
-                <b>Name:</b> {selectedUser.name}
-              </p>
-              <p>
-                <b>Email:</b> {selectedUser.email}
-              </p>
-              <p>
-                <b>Phone:</b> {selectedUser.phone || "N/A"}
-              </p>
-              <p>
-                <b>Address:</b> {selectedUser.address || "N/A"}
-              </p>
+              <Card className="my-3 shadow w-100">
+                <Card.Img
+                  className="my-2 img-fluid mx-auto"
+                  variant="top"
+                  src={selectedUser.image}
+                  style={{ maxWidth: "150px", borderRadius: "50%" }}
+                />
+                <Card.Body className="text-center">
+                  <Card.Title>{selectedUser.name}</Card.Title>
+                  <Card.Text>
+                    <small>{selectedUser.email}</small>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
             </>
           ) : (
             <p>Loading...</p>

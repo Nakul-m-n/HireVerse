@@ -33,9 +33,8 @@ const Jobs = () => {
   async function fetchData() {
     try {
       const res = await api.get("/user/jobs");
-      console.log(res?.data);
-      setJobs(res?.data);
-      setFilteredJobs(res?.data);
+      setJobs(res?.data.reverse());
+      setFilteredJobs(res?.data.reverse());
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }

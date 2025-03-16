@@ -70,7 +70,7 @@ const Footer = () => {
             <h5>Contact Us</h5>
             <div className="d-flex">
               <input
-                type="text"
+                // type=""
                 placeholder="Enter your E-mail"
                 className="form-control me-2"
               />

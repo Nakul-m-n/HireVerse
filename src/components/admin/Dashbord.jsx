@@ -15,10 +15,7 @@ const Dashbord = () => {
       await api
         .get("/admin/totalCounts")
         .then((res) => {
-          console.log(res.data);
-          console.log("dskjjjjjjjjjjj")
           setData(res.data);
-         
         })
         .catch((err) => {
           toast.error(err.response.data.message);
