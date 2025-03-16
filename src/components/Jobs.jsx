@@ -12,25 +12,6 @@ const Jobs = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("latest");
   const [selectedJob, setSelectedJob] = useState(null);
-  const [image, setImage] = React.useState(null);
-  async function getUrl(id) {
-    await api
-    .get("/media/profile" + (id ? `/${id}` : ""))
-      .then((response) => {
-        setImage(response.data.url);
-        
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        toast.error(
-          error?.response?.data?.message || error?.message || "Unknown error"
-        );
-      });
-  }
-
-  useEffect(() => {
-    getUrl();
-  }, []);
 
   useEffect(() => {
     fetchData();
@@ -52,6 +33,7 @@ const Jobs = () => {
   async function fetchData() {
     try {
       const res = await api.get("/user/jobs");
+      console.log(res?.data);
       setJobs(res?.data);
       setFilteredJobs(res?.data);
     } catch (error) {
@@ -196,7 +178,11 @@ const Jobs = () => {
                   <div className="row align-items-center">
                     {/* Company Logo */}
                     <div className="col-12 col-md-4 text-center">
-                      <img src={image} alt="Company Logo" className="img-fluid" />
+                      <img
+                        src={job.image}
+                        alt="Company Logo"
+                        className="img-fluid"
+                      />
                     </div>
 
                     {/* Job Details */}

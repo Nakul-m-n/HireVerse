@@ -3,11 +3,12 @@ import { Button, Card, FloatingLabel, Form, Modal } from "react-bootstrap";
 
 import API from "../../API";
 import { toast } from "react-toastify";
-import api from "../../API";
 
 const JobVacDetails = () => {
   const [show, setShow] = useState(false);
+  const [showPro, setShowPro] = useState(false);
   const [updateId, setUpdateId] = useState(null);
+  const [image, setImage] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -20,26 +21,6 @@ const JobVacDetails = () => {
     skills: "",
     qualification: "",
   });
-
-  const [image, setImage] = React.useState(null);
-  async function getUrl(id) {
-    await api
-      .get("/media/profile" + (id ? `/${id}` : ""))
-      .then((response) => {
-        setImage(response.data.url);
-        
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        toast.error(
-          error?.response?.data?.message || error?.message || "Unknown error"
-        );
-      });
-  }
-
-  useEffect(() => {
-    getUrl();
-  }, []);
 
   useEffect(() => {
     fetchData();
@@ -54,10 +35,48 @@ const JobVacDetails = () => {
     }
   }
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+    // Prepare the data to send to the backend
+    const formData = new FormData();
+    formData.append("image", file);
+
+    // Send the image to the backend using axios
+
+    await API.post("/media/job/" + updateId, formData)
+      .then(() => {
+        toast.success("Image uploaded successfully");
+        setJobs([]);
+        fetchData(); // Refresh the image URL
+        handleClose();
+        handleClosePro();
+        setUpdateId(null);
+        setImage(null);
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        toast.error(
+          error?.response?.data?.message || error?.message || "Unknown error"
+        );
+      });
+  };
+
   const DateConvert = (date) => {
     date = new Date(date).toLocaleDateString();
     const [month, day, year] = String(date).split("/");
     return `${day}/${month}/${year}`;
+  };
+
+  const handleShowPro = (job) => {
+    setUpdateId(job._id);
+    setImage(job.image);
+
+    setShowPro(true);
   };
 
   const handleShow = (job = null) => {
@@ -95,6 +114,11 @@ const JobVacDetails = () => {
 
   const handleClose = () => {
     setShow(false);
+    setUpdateId(null);
+  };
+
+  const handleClosePro = () => {
+    setShowPro(false);
     setUpdateId(null);
   };
 
@@ -194,7 +218,7 @@ const JobVacDetails = () => {
                 {/* Image Section */}
                 <div className="col-12 col-md-4 text-center">
                   <img
-                    src={image}
+                    src={job.image || image}
                     alt="Company Logo"
                     className="img-fluid"
                     style={{ maxWidth: "250px", borderRadius: "10px" }}
@@ -263,7 +287,7 @@ const JobVacDetails = () => {
                     <span>{DateConvert(job.tillDate)}</span>
                   </p>
                 </div>
-                <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center">
+                <div className="col-12 col-md-6 d-flex justify-content-end">
                   <Button
                     className="me-2"
                     variant="danger"
@@ -271,8 +295,15 @@ const JobVacDetails = () => {
                   >
                     Delete
                   </Button>
-                  <Button variant="warning" onClick={() => handleShow(job)}>
+                  <Button
+                    className="me-2"
+                    variant="warning"
+                    onClick={() => handleShow(job)}
+                  >
                     Edit
+                  </Button>
+                  <Button variant="info" onClick={() => handleShowPro(job)}>
+                    Upload Image
                   </Button>
                 </div>
               </div>
@@ -403,6 +434,27 @@ const JobVacDetails = () => {
           </Button>
           <Button variant="primary" onClick={OnSave}>
             {updateId ? "Update" : "Add"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showPro} onHide={handleClosePro} backdrop="static" size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Upload Profile Image</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="formFile" className="mb-3">
+            <Form.Label>Select an image to upload</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClosePro}>
+            Close
           </Button>
         </Modal.Footer>
       </Modal>

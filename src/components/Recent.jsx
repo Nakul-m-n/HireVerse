@@ -11,25 +11,6 @@ const Recent = () => {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("latest");
-  const [image, setImage] = React.useState(null);
-  async function getUrl(id) {
-    await api
-    .get("/media/profile" + (id ? `/${id}` : ""))
-      .then((response) => {
-        setImage(response.data.url);
-        
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        toast.error(
-          error?.response?.data?.message || error?.message || "Unknown error"
-        );
-      });
-  }
-
-  useEffect(() => {
-    getUrl();
-  }, []);
 
   useEffect(() => {
     fetchData();
@@ -143,88 +124,101 @@ const Recent = () => {
 
         <div style={{ minHeight: "100vh" }}>
           <div className="container">
-            {
-              !filteredJobs.length && (
-                <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
-                  <h2>No Jobs Found</h2>
-                </div>
-              )
-            }
+            {!filteredJobs.length && (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ minHeight: "100vh" }}
+              >
+                <h2>No Jobs Found</h2>
+              </div>
+            )}
             {filteredJobs.map((job) => (
               <Card key={job._id} className="shadow mb-3">
-              <Card.Body>
-                <div className="row align-items-center">
-                  {/* Company Logo */}
-                  <div className="col-12 col-md-4 text-center">
-                    <img src={image} alt="Company Logo" className="img-fluid" />
-                  </div>
-            
-                  {/* Job Details */}
-                  <div className="col-12 col-md-8 mt-3 mt-md-0">
-                    <Card.Title>{job.title}</Card.Title>
-            
-                    {/* Job Info - Wraps on small screens */}
-                    <div className="d-flex flex-wrap justify-content-between">
-                      <p className="d-flex align-items-center me-3">
-                        <i className="fa-regular fa-clock me-2"></i> {job.jobTime}
-                      </p>
-                      <p className="d-flex align-items-center me-3">
-                        <i className="fa-solid fa-house-laptop me-2"></i> {job.jobType}
-                      </p>
-                      <p className="d-flex align-items-center">
-                        <i className="fa-solid fa-building me-2"></i> {job.companyId.name || "Company Name"}
-                      </p>
+                <Card.Body>
+                  <div className="row align-items-center">
+                    {/* Company Logo */}
+                    <div className="col-12 col-md-4 text-center">
+                      <img
+                        src={job.image}
+                        alt="Company Logo"
+                        className="img-fluid"
+                      />
                     </div>
-            
-                    {/* Skills */}
-                    <div className="d-flex flex-wrap">
-                      {job.skills.map((skill, idx) => (
-                        <span key={idx} className="badge bg-primary m-1">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-            
-                    {/* Description */}
-                    <p className="mt-2">{job.description}</p>
-            
-                    {/* Location & Salary */}
-                    <p>
-                      <strong>
-                        <i className="fa-solid fa-location-dot me-2"></i> Location:
-                      </strong>{" "}
-                      {job.location}
-                    </p>
-                    <p>
-                      <strong>
-                        <i className="fa-solid fa-sack-dollar me-2"></i> Salary:
-                      </strong>{" "}
-                      {job.salary} Monthly
-                    </p>
-            
-                    {/* Qualifications */}
-                    <div className="mt-3">
-                      <h6>Qualifications:</h6>
-                      <ul>
-                        {job.qualification.map((qual, idx) => (
-                          <li key={idx}>{qual}</li>
+
+                    {/* Job Details */}
+                    <div className="col-12 col-md-8 mt-3 mt-md-0">
+                      <Card.Title>{job.title}</Card.Title>
+
+                      {/* Job Info - Wraps on small screens */}
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <p className="d-flex align-items-center me-3">
+                          <i className="fa-regular fa-clock me-2"></i>{" "}
+                          {job.jobTime}
+                        </p>
+                        <p className="d-flex align-items-center me-3">
+                          <i className="fa-solid fa-house-laptop me-2"></i>{" "}
+                          {job.jobType}
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <i className="fa-solid fa-building me-2"></i>{" "}
+                          {job.companyId.name || "Company Name"}
+                        </p>
+                      </div>
+
+                      {/* Skills */}
+                      <div className="d-flex flex-wrap">
+                        {job.skills.map((skill, idx) => (
+                          <span key={idx} className="badge bg-primary m-1">
+                            {skill}
+                          </span>
                         ))}
-                      </ul>
+                      </div>
+
+                      {/* Description */}
+                      <p className="mt-2">{job.description}</p>
+
+                      {/* Location & Salary */}
+                      <p>
+                        <strong>
+                          <i className="fa-solid fa-location-dot me-2"></i>{" "}
+                          Location:
+                        </strong>{" "}
+                        {job.location}
+                      </p>
+                      <p>
+                        <strong>
+                          <i className="fa-solid fa-sack-dollar me-2"></i>{" "}
+                          Salary:
+                        </strong>{" "}
+                        {job.salary} Monthly
+                      </p>
+
+                      {/* Qualifications */}
+                      <div className="mt-3">
+                        <h6>Qualifications:</h6>
+                        <ul>
+                          {job.qualification.map((qual, idx) => (
+                            <li key={idx}>{qual}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
-            
-                <hr />
-            
-                {/* Footer */}
-                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                  <p className="font-weight-bold text-center text-md-start" style={{ fontFamily: "monospace" }}>
-                    <i className="fa-solid fa-calendar-days"></i> Last date: <span>{DateConvert(job.tillDate)}</span>
-                  </p>
-                </div>
-              </Card.Body>
-            </Card>
-            
+
+                  <hr />
+
+                  {/* Footer */}
+                  <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                    <p
+                      className="font-weight-bold text-center text-md-start"
+                      style={{ fontFamily: "monospace" }}
+                    >
+                      <i className="fa-solid fa-calendar-days"></i> Last date:{" "}
+                      <span>{DateConvert(job.tillDate)}</span>
+                    </p>
+                  </div>
+                </Card.Body>
+              </Card>
             ))}
           </div>
         </div>

@@ -7,7 +7,7 @@ import Recent from "../components/Recent";
 import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
-  var [tab, setTab] = useState(0);
+  var [tab, setTab] = useState(2);
   const navigate = useNavigate();
   useEffect(() => {
     document.title = "User Dashboard";
