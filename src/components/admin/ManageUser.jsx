@@ -16,7 +16,6 @@ const ManageUser = () => {
     await api
       .get("/admin/showAllUsers")
       .then((res) => {
-        
         setUsers(res.data);
       })
       .catch((err) => {
@@ -53,12 +52,6 @@ const ManageUser = () => {
     setEditShow(true);
   };
 
-  const handleAddUser = () => {
-    setUsers([...users, { ...newUser, id: users.length + 1 }]);
-    setNewUser({ id: "", name: "", email: "", blocked: false });
-    handleClose();
-  };
-
   const handleEditUser = () => {
     setUsers(
       users.map((user) => (user._id === editUser._id ? editUser : user))
@@ -66,13 +59,21 @@ const ManageUser = () => {
     handleEditClose();
   };
 
-  const handleDeleteUser = (id) => {
-    setUsers(users.filter((user) => user._id !== id));
+  const handleDeleteUser = async(id) => {
+    try {
+      await api.delete(`/admin/user/${id}`).then(() => {
+        callAPI();
+        toast.success("User deleted successfully");
+      });
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   const handleBlockUser = async (id) => {
     try {
       await api.post(`/admin/user/block/${id}`).then(() => {
+        toast.success("User blocked successfully");
         callAPI();
       });
     } catch (error) {
@@ -83,6 +84,7 @@ const ManageUser = () => {
   const handleUnBlockUser = async (id) => {
     try {
       await api.post(`/admin/user/unblock/${id}`);
+      toast.success("User unblocked successfully");
       callAPI();
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
@@ -110,9 +112,6 @@ const ManageUser = () => {
               />
             </Col>
             <Col md={6} className="text-end">
-              <Button variant="primary" className="me-2" onClick={handleShow}>
-                Add User
-              </Button>
               <Button
                 variant={showBlocked ? "secondary" : "dark"}
                 onClick={() => setShowBlocked(!showBlocked)}
@@ -132,15 +131,29 @@ const ManageUser = () => {
             </thead>
             <tbody>
               {filteredUsers.map((user, index) => (
-                <tr key={index} className={user.isBlocked ? "table-danger" : ""}>
+                <tr
+                  key={index}
+                  className={user.isBlocked ? "table-danger" : ""}
+                >
                   <td>{index}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>
-                    <Button disabled variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(user)}>
+                    {/* <Button
+                      disabled
+                      variant="warning"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleEditShow(user)}
+                    >
                       <i className="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button disabled variant="danger" size="sm" className="me-2" onClick={() => handleDeleteUser(user._id)}>
+                    </Button> */}
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleDeleteUser(user._id)}
+                    >
                       <i className="fa-solid fa-trash"></i>
                     </Button>
                     {!user.isBlocked && ( // Show block button only in normal user view
@@ -168,45 +181,6 @@ const ManageUser = () => {
           </Table>
         </Col>
       </Row>
-
-      {/* Add User Modal */}
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New User</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                value={newUser.name}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, name: e.target.value })
-                }
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                value={newUser.email}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, email: e.target.value })
-                }
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleAddUser}>
-            Add User
-          </Button>
-        </Modal.Footer>
-      </Modal>
 
       {/* Edit User Modal */}
       <Modal show={editShow} onHide={handleEditClose}>

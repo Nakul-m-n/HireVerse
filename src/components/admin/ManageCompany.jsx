@@ -76,13 +76,21 @@ const ManageCompany = () => {
     handleEditClose();
   };
 
-  const handleDeleteCompany = (id) => {
-    setCompanies(companies.filter((company) => company._id !== id));
+  const handleDeleteCompany = async (id) => {
+    try {
+      await api.delete(`/admin/user/${id}`).then(() => {
+        callAPI();
+        toast.success("Company deleted successfully");
+      });
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   const handleBlockCompany = async (id) => {
     try {
       await api.post(`/admin/user/block/${id}`);
+      toast.success("Company blocked successfully");
       callAPI();
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
@@ -92,6 +100,7 @@ const ManageCompany = () => {
   const handleUnBlockCompany = async (id) => {
     try {
       await api.post(`/admin/user/unblock/${id}`);
+      toast.success("Company unblocked successfully");
       callAPI();
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
@@ -127,9 +136,6 @@ const ManageCompany = () => {
               />
             </Col>
             <Col md={6} className="text-end">
-              <Button variant="primary" className="me-2" onClick={handleShow}>
-                Add Company
-              </Button>
               <Button
                 variant={showBlocked ? "secondary" : "dark"}
                 onClick={() => setShowBlocked(!showBlocked)}
@@ -159,10 +165,21 @@ const ManageCompany = () => {
                   <td>{company.name}</td>
                   <td>{company.email}</td>
                   <td>
-                    <Button disabled variant="warning" size="sm" className="me-2" onClick={() => handleEditShow(company)}>
+                    {/* <Button
+                      disabled
+                      variant="warning"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleEditShow(company)}
+                    >
                       <i className="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button disabled variant="danger" size="sm" className="me-2" onClick={() => handleDeleteCompany(company._id)}>
+                    </Button> */}
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleDeleteCompany(company._id)}
+                    >
                       <i className="fa-solid fa-trash"></i>
                     </Button>
                     {!company.isBlocked && (

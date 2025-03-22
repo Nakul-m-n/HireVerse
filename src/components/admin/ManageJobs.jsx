@@ -64,8 +64,15 @@ const ManageJobs = () => {
     handleEditClose();
   };
 
-  const handleDeleteJob = (id) => {
-    setJobs(jobs.filter((job) => job.id !== id));
+  const handleDeleteJob = async (id) => {
+    try {
+      await api.delete(`/admin/job/${id}`).then(() => {
+        toast.success("Job deleted successfully");
+        callAPI();
+      });
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   const handleBlockJob = (id) => {
@@ -113,7 +120,7 @@ const ManageJobs = () => {
                   <td>{job.title}</td>
                   <td>{job.companyId.name}</td>
                   <td>
-                    <Button
+                    {/* <Button
                       variant="warning"
                       size="sm"
                       className="me-2"
@@ -121,36 +128,15 @@ const ManageJobs = () => {
                       disabled
                     >
                       <i className="fa-solid fa-pen-to-square"></i>
-                    </Button>
+                    </Button> */}
                     <Button
                       variant="danger"
                       size="sm"
                       className="me-2"
-                      disabled
-                      onClick={() => handleDeleteJob(job.id)}
+                      onClick={() => handleDeleteJob(job._id)}
                     >
                       <i className="fa-solid fa-trash"></i>
                     </Button>
-                    {!showBlocked && (
-                      <Button
-                        variant="dark"
-                        size="sm"
-                        disabled
-                        onClick={() => handleBlockJob(job.id)}
-                      >
-                        <i className="fa-solid fa-ban"></i>
-                      </Button>
-                    )}
-                    {showBlocked && (
-                      <Button
-                        disabled
-                        variant="success"
-                        size="sm"
-                        onClick={() => handleBlockJob(job.id)}
-                      >
-                        Unblock
-                      </Button>
-                    )}
                   </td>
                 </tr>
               ))}

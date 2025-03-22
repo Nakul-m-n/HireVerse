@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import landingimg from "../assets/images/landingimg.png";
 import tcs from "../assets/images/tcs.png";
 import infosys from "../assets/images/infosys.png";
@@ -11,13 +11,25 @@ import { toast } from "react-toastify";
 import api from "../API";
 
 const Home = () => {
- 
-  const companies = [
+  const [companies, setCompanies] = useState([]);
+  const companies_ = [
     { name: "TCS", logo: tcs },
     { name: "Infosys", logo: infosys },
     { name: "Cognizant", logo: cog },
     { name: "Wipro", logo: wipro },
   ];
+
+  useEffect(() => {
+    api
+      .get("/company/all")
+      .then((res) => {
+        setCompanies(res.data.reverse());
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.response.data.message || "Something went wrong");
+      });
+  });
 
   return (
     <>
@@ -64,9 +76,10 @@ const Home = () => {
             <div className="d-flex justify-content-around align-items-center flex-wrap ">
               {companies.slice(0, 3).map((company, index) => (
                 <Card key={index} className="my-3 " style={{ width: "13rem" }}>
-                  <Card.Img variant="top" src={company.logo} />
+                  <Card.Img variant="top" src={company.image} />
                   <Card.Body>
                     <Card.Title>{company.name}</Card.Title>
+                    <Card.Text>{company.description}</Card.Text>
                   </Card.Body>
                 </Card>
               ))}
@@ -76,7 +89,7 @@ const Home = () => {
 
         <marquee>
           <div className="d-flex justify-content-around  align-items-center">
-            {companies.map((company, index) => (
+            {companies_.map((company, index) => (
               <img
                 key={index}
                 width={"10%"}
