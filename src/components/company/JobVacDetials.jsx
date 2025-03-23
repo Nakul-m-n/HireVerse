@@ -29,7 +29,6 @@ const JobVacDetails = () => {
   async function fetchData() {
     try {
       const res = await API.get("/company/job");
-      console.log(res.data)
       setJobs(res?.data?.reverse());
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
