@@ -17,11 +17,13 @@ const Footer = () => {
           <div style={{ width: "400px" }}>
             <h5>
               {" "}
-              <i className="fa-solid fa-computer"> </i> Job Fair
+              <i className="fa-solid fa-computer"> </i>HireVerse
             </h5>
             <p>
-              Designed and built with all the love in the world by the Bootstrap
-              team with the help of our contributors.
+            HireVerse is a next-gen job portal connecting job seekers with
+                top companies. Our platform streamlines hiring, making it easy
+                for candidates to find the right opportunities and for
+                businesses to discover top talent.
             </p>
             <p>coe liscenced Luminar,docs cc by 3,0</p>
             <p>Currently v5.3.2</p>

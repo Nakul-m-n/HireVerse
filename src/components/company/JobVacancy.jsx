@@ -14,38 +14,29 @@ const JobVacancy = () => {
     try {
       const res = await api.get("/company/job_count");
       setJobs(res?.data?.reverse());
-      console.log(res?.data?.reverse());
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
   }
+
   return (
-    <div style={{ padding: "100px", minHeight: "100vh" }} className="container">
-      <h3 className="text-center mb-4">Job Vacancy List</h3>
+    <div className="container py-5" style={{ minHeight: "100vh" }}>
+      <h2 className="text-center  my-4 text-primary">Job Vacancy List</h2>
       <div className="row g-4">
         {jobs.map((job, index) => (
-          <div key={index} className="col-md-4 d-flex">
-            <Card
-              style={{
-                backgroundColor: "#f8f9fa",
-                border: "1px solid #dee2e6",
-                borderRadius: "10px",
-                width: "100%",
-                height: "100%",
-              }}
-              className="shadow-sm flex-fill"
-            >
-              <Card.Body>
-                <Card.Title className="text-primary">{job?.jobTitle}</Card.Title>
+          <div key={index} className="col-lg-4 col-md-6 d-flex">
+            <Card className="shadow-lg flex-fill border-0" style={{ borderRadius: "12px", transition: "transform 0.3s", background: "#ffffff" }}>
+              <Card.Body className="p-4 d-flex flex-column">
+                <Card.Title className="text-dark fw-bold text-center">{job?.jobTitle}</Card.Title>
                 <div className="mt-3">
-                  <p className="mb-1">
-                    <strong>Total Applicants:</strong> {job?.count || 0}
+                  <p className="mb-2 text-secondary">
+                    <strong className="text-dark">Total Applicants:</strong> {job?.count || 0}
                   </p>
-                  <p className="mb-1">
-                    <strong>Selected:</strong> {job?.selected || 0}
+                  <p className="mb-2 text-success">
+                    <strong className="text-dark">Selected:</strong> {job?.selected || 0}
                   </p>
-                  <p className="mb-1">
-                    <strong>Unselected:</strong> {job?.unselected || 0}
+                  <p className="mb-2 text-danger">
+                    <strong className="text-dark">Unselected:</strong> {job?.unselected || 0}
                   </p>
                 </div>
               </Card.Body>

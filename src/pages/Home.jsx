@@ -71,7 +71,7 @@ const Home = () => {
 
         <div className="container my-5 w-100">
           <div className="border rounded ">
-            <h1>Recently Join Company</h1>
+            <h1>Popular Company</h1>
             <hr />
             <div className="d-flex justify-content-around align-items-center flex-wrap ">
               {companies.slice(0, 3).map((company, index) => (
