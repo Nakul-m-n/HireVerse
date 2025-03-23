@@ -11,6 +11,7 @@ const UserInfo = () => {
     name: "",
     email: "",
     experience: "",
+    number: "",
   });
 
   const onSave = async () => {
@@ -38,7 +39,7 @@ const UserInfo = () => {
       .then((response) => {
         setImage(response.data.image);
         console.log("User fetched successfully:", response.data);
-        setUser(response.data );
+        setUser(response.data);
       })
       .catch((error) => {
         console.error("Error fetching user:", error);
@@ -100,6 +101,7 @@ const UserInfo = () => {
 
             <h5>Name : {user.name}</h5>
             <p>Email : {user.email}</p>
+            <p>Phone Number : {user.number}</p>
             <p>Experience : {user.experience}</p>
           </div>
         </div>
@@ -149,6 +151,19 @@ const UserInfo = () => {
                 value={user.email}
               />
               <label htmlFor="floatingEmail">Email Address</label>
+            </Form.Floating>
+
+            <Form.Floating className="mb-3">
+              <Form.Control
+                id="floatingPhn"
+                type="number"
+                placeholder="911234567890"
+                disabled={!onEdit}
+                name="number"
+                value={user.number}
+                onChange={HandleChange}
+              />
+              <label htmlFor="floatingPhn">Phone Number</label>
             </Form.Floating>
 
             <Form.Floating className="mb-3">

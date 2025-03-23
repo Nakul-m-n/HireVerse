@@ -32,6 +32,7 @@ const Recent = () => {
   async function fetchData() {
     try {
       const res = await api.get("/user/requests");
+      
       setJobs(res?.data);
       setFilteredJobs(res?.data);
     } catch (error) {

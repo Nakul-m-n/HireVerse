@@ -188,7 +188,7 @@ const SortedJobReq = () => {
                 <b>Email:</b> {selectedUser.email}
               </p>
               <p>
-                <b>Phone:</b> {selectedUser.phone || "N/A"}
+                <b>Phone:</b> {selectedUser.number || "N/A"}
               </p>
               <p>
                 <b>Address:</b> {selectedUser.address || "N/A"}
