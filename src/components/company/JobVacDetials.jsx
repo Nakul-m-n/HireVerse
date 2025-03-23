@@ -184,6 +184,8 @@ const JobVacDetails = () => {
               autoClose: 2000,
             });
           });
+      } else {
+        toast.dismiss(id);
       }
     } catch (error) {
       console.log(error);

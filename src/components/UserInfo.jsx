@@ -37,7 +37,8 @@ const UserInfo = () => {
       .get("/auth/me")
       .then((response) => {
         setImage(response.data.image);
-        setUser(response.data);
+        console.log("User fetched successfully:", response.data);
+        setUser(response.data );
       })
       .catch((error) => {
         console.error("Error fetching user:", error);
@@ -156,6 +157,7 @@ const UserInfo = () => {
                 type="text"
                 placeholder="Experience"
                 disabled={!onEdit}
+                onChange={HandleChange}
                 name="experience"
                 value={user.experience}
               />

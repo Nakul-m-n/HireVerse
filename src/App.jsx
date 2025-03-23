@@ -18,7 +18,6 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/login'element={<Auth/>}/>
         <Route path='/register' element={<Auth insideRegister={true}/>}/>
-        <Route path='/register2' element={<Auth insideCompany={true} />}/>
         <Route path='/userDashboard' element={<UserDashboard/>}/>
         <Route path='/compDashboard' element={<CompDashboard/>}/>
         <Route path='/admin' element={<AdminDashboard/>}/>

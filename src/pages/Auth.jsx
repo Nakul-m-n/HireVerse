@@ -247,6 +247,11 @@ const Auth = ({ insideRegister }) => {
                       </Link>
                     </p>
                   )}
+                  <p style={{ textAlign: "center", color: "grey" }}>
+                      <Link style={{ color: "grey" }} to={"/"}>
+                        HOME
+                      </Link>
+                    </p>
                 </div>
               </div>
             </div>
